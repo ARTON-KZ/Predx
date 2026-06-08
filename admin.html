@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Predx</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body class="admin-page">
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div class="admin-login" id="loginScreen">
+    <div class="page-card" style="max-width:400px;">
+      <a href="index.html">
+        <img src="site assets/logo.png" alt="Predx" class="page-card__logo" />
+      </a>
+      <h2 class="page-card__title">ADMIN <span class="chrome">ACCESS</span></h2>
+      <p class="page-card__sub">Enter your admin password to access the dashboard.</p>
+
+      <div id="loginError" class="alert alert--error" style="display:none; margin-bottom:var(--sp-5);">
+        <span>⚠</span>
+        <span id="loginErrorText"></span>
+      </div>
+
+      <form id="loginForm" style="display:flex; flex-direction:column; gap:var(--sp-5);">
+        <div class="form-group">
+          <label class="form-label" for="adminPassword">Password</label>
+          <input
+            class="form-input"
+            type="password"
+            id="adminPassword"
+            placeholder="Enter admin password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn--primary btn--full btn--lg" id="loginBtn">
+          <span id="loginBtnText">Access Dashboard</span>
+          <span id="loginSpinner" class="spinner" style="display:none;"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div id="dashboard" style="display:none;">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="container">
+        <div class="admin-header__inner">
+          <div style="display:flex; align-items:center; gap:var(--sp-5);">
+            <img src="site assets/logo.png" alt="Predx" class="admin-header__logo" />
+            <span class="admin-header__title">Admin Dashboard</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:var(--sp-3);">
+            <button id="refreshBtn" class="btn btn--ghost" style="font-size:13px;" title="Refresh">
+              ↻ Refresh
+            </button>
+            <button id="logoutBtn" class="btn btn--ghost" style="font-size:13px; color:var(--text-sub);">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="admin-content">
+      <div class="container">
+
+        <!-- Page Tab Nav -->
+        <div style="display:flex; gap:var(--sp-2); margin-bottom:var(--sp-7); border-bottom:1px solid var(--border); padding-bottom:var(--sp-4);">
+          <button class="page-tab active" data-page="members" id="pageTabMembers"
+            style="font-size:14px; font-weight:600; padding:8px 20px; border-radius:var(--r-md); border:none; cursor:pointer; transition:all var(--ease); background:var(--elevated); color:var(--text); letter-spacing:0.03em;">
+            Members
+          </button>
+          <button class="page-tab" data-page="predictions" id="pageTabPredictions"
+            style="font-size:14px; font-weight:600; padding:8px 20px; border-radius:var(--r-md); border:none; cursor:pointer; transition:all var(--ease); background:transparent; color:var(--text-sub); letter-spacing:0.03em;">
+            Predictions
+          </button>
+        </div>
+
+        <!-- ===== MEMBERS PANEL ===== -->
+        <div id="membersPanel">
+          <!-- Stats -->
+          <div class="admin-stats">
+            <div class="admin-stat">
+              <div class="admin-stat__value chrome" id="statTotal">—</div>
+              <div class="admin-stat__label">Total Members</div>
+            </div>
+            <div class="admin-stat">
+              <div class="admin-stat__value" id="statIssued" style="color:var(--green);">—</div>
+              <div class="admin-stat__label">Codes Issued</div>
+            </div>
+            <div class="admin-stat">
+              <div class="admin-stat__value" id="statPending" style="color:var(--amber);">—</div>
+              <div class="admin-stat__label">Pending Issuance</div>
+            </div>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="admin-filters">
+            <button class="filter-btn active" data-filter="all">All Members</button>
+            <button class="filter-btn" data-filter="pending">Code Not Issued</button>
+            <button class="filter-btn" data-filter="issued">Code Issued</button>
+          </div>
+
+          <!-- Loading -->
+          <div id="tableLoading" style="text-align:center; padding:var(--sp-12); color:var(--text-dim);">
+            <div class="spinner" style="margin:0 auto var(--sp-4);"></div>
+            <p style="font-size:14px;">Loading members...</p>
+          </div>
+
+          <!-- Table -->
+          <div class="admin-table-wrap" id="tableWrap" style="display:none;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>Paid On</th>
+                  <th>Password</th>
+                  <th>Access Code (OTP)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="membersBody"></tbody>
+            </table>
+            <div class="table-empty" id="tableEmpty" style="display:none;">
+              No members found for this filter.
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PREDICTIONS PANEL ===== -->
+        <div id="predictionsPanel" style="display:none;">
+
+          <!-- Add Prediction Form -->
+          <div class="card" style="margin-bottom:var(--sp-6);">
+            <h4 style="font-family:var(--font-display); font-size:20px; letter-spacing:0.04em; margin-bottom:var(--sp-5);">ADD <span class="chrome">PREDICTION</span></h4>
+
+            <div id="predFormError" class="alert alert--error" style="display:none; margin-bottom:var(--sp-4);">
+              <span>⚠</span>
+              <span id="predFormErrorText"></span>
+            </div>
+            <div id="predFormSuccess" class="alert alert--success" style="display:none; margin-bottom:var(--sp-4);">
+              <span>✓</span>
+              <span>Prediction added successfully.</span>
+            </div>
+
+            <form id="predForm">
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--sp-4); margin-bottom:var(--sp-4);">
+                <div class="form-group">
+                  <label class="form-label">Date</label>
+                  <input class="form-input" type="date" id="predDate" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Home Team</label>
+                  <input class="form-input" type="text" id="predHome" placeholder="e.g. Arsenal" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Away Team</label>
+                  <input class="form-input" type="text" id="predAway" placeholder="e.g. Chelsea" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">League <span style="color:var(--text-dim);">(optional)</span></label>
+                  <input class="form-input" type="text" id="predLeague" placeholder="e.g. Premier League" />
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label class="form-label">Prediction / Tip</label>
+                  <input class="form-input" type="text" id="predTip" placeholder="e.g. Both Teams to Score" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Odds <span style="color:var(--text-dim);">(optional)</span></label>
+                  <input class="form-input" type="text" id="predOdds" placeholder="e.g. 1.85" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Plan Tier</label>
+                  <select class="form-input" id="predPlan">
+                    <option value="basic">Basic</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn--primary" id="predSubmitBtn" style="min-width:160px;">
+                <span id="predSubmitText">Add Prediction</span>
+                <span id="predSubmitSpinner" class="spinner" style="display:none;"></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Predictions Table -->
+          <div id="predTableLoading" style="text-align:center; padding:var(--sp-12); color:var(--text-dim);">
+            <div class="spinner" style="margin:0 auto var(--sp-4);"></div>
+            <p style="font-size:14px;">Loading predictions...</p>
+          </div>
+          <div class="admin-table-wrap" id="predTableWrap" style="display:none;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Match</th>
+                  <th>League</th>
+                  <th>Prediction</th>
+                  <th>Odds</th>
+                  <th>Tier</th>
+                  <th>Result</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="predBody"></tbody>
+            </table>
+            <div class="table-empty" id="predEmpty" style="display:none;">
+              No predictions yet. Add one above.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

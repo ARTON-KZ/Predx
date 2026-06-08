@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predx — Predicciones Profesionales de Fútbol</title>
+  <meta name="description" content="Únete a miles de ganadores con Predx. Predicciones diarias de fútbol, análisis de partidos del fin de semana y acceso a la comunidad VIP." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html">
+          <img src="site assets/logo.png" alt="Predx" class="navbar__logo" />
+        </a>
+        <div class="navbar__links">
+          <a href="#how-it-works" class="navbar__link" data-i18n="nav-how">Cómo Funciona</a>
+          <a href="#plans" class="navbar__link" data-i18n="nav-plans">Planes</a>
+          <a href="#faq" class="navbar__link" data-i18n="nav-faq">Preguntas</a>
+        </div>
+        <div class="navbar__actions">
+          <button id="langToggle" class="btn btn--ghost" style="font-size:12px; font-weight:700; letter-spacing:0.06em; padding:6px 14px; border-radius:20px;">English</button>
+          <a href="login.html" class="btn btn--ghost" data-i18n="nav-login">Iniciar Sesión</a>
+          <a href="#plans" class="btn btn--primary" data-i18n="nav-start">Comenzar</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero__bg">
+      <div class="hero__grid"></div>
+      <div class="hero__orb hero__orb--1"></div>
+      <div class="hero__orb hero__orb--2"></div>
+      <div class="hero__orb hero__orb--3"></div>
+    </div>
+
+    <div class="hero__content">
+      <div class="hero__eyebrow">
+        <span class="hero__eyebrow-dot"></span>
+        <span data-i18n="hero-eyebrow">Confiado por más de 2,400 miembros en todo el mundo</span>
+      </div>
+
+      <h1 class="hero__title" data-i18n-html="hero-title">
+        GANA MÁS.<br />
+        <span class="chrome">PREDICE MEJOR.</span>
+      </h1>
+
+      <p class="hero__subtitle" data-i18n="hero-sub">
+        Predicciones diarias de fútbol profesionales respaldadas por análisis de datos. Únete a nuestra comunidad VIP y empieza a ganar de forma consistente.
+      </p>
+
+      <div class="hero__actions">
+        <a href="#plans" class="btn btn--primary btn--lg" data-i18n="hero-btn-plans">Ver Planes</a>
+        <a href="#how-it-works" class="btn btn--outline btn--lg" data-i18n="hero-btn-how">Cómo Funciona</a>
+      </div>
+    </div>
+
+    <div class="hero-stats container">
+      <div class="stat-item reveal">
+        <div class="stat-value chrome" data-count="100" data-suffix="%">0</div>
+        <div class="stat-label" data-i18n="stat-winrate">Tasa de Éxito</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.1s">
+        <div class="stat-value chrome" data-count="12400">0</div>
+        <div class="stat-label" data-i18n="stat-predictions">Predicciones Realizadas</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.2s">
+        <div class="stat-value chrome" data-count="2400">0</div>
+        <div class="stat-label" data-i18n="stat-members">Miembros Activos</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.3s">
+        <div class="stat-value chrome" data-count="4">0</div>
+        <div class="stat-label" data-i18n="stat-years">Años Operando</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TICKER ===== -->
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-item">Arsenal vs Chelsea <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Man City vs Liverpool <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Barcelona vs Real Madrid <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">PSG vs Bayern Munich <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Juventus vs Inter Milan <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Dortmund vs Leipzig <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Atletico vs Sevilla <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Napoli vs AC Milan <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Arsenal vs Chelsea <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Man City vs Liverpool <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Barcelona vs Real Madrid <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">PSG vs Bayern Munich <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Juventus vs Inter Milan <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Dortmund vs Leipzig <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Atletico vs Sevilla <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+      <span class="ticker-item">Napoli vs AC Milan <span class="ticker-item__dot">·</span> <span class="ticker-item__result">WON ✓</span></span>
+    </div>
+  </div>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__eyebrow" data-i18n="how-eyebrow">Proceso</div>
+        <h2 class="section-header__title" data-i18n-html="how-title">CÓMO <span class="chrome">FUNCIONA</span></h2>
+        <p class="section-header__sub" data-i18n="how-sub">Únete en tres sencillos pasos y empieza a recibir predicciones ganadoras hoy.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-number">1</div>
+          <div class="step-icon">📊</div>
+          <h4 data-i18n="step1-title">Elige Tu Plan</h4>
+          <p data-i18n="step1-desc">Selecciona el plan Básico o Premium que mejor se adapte a tus necesidades. Ambos incluyen predicciones diarias de nuestros analistas expertos.</p>
+        </div>
+
+        <div class="step-card reveal" style="transition-delay:0.1s">
+          <div class="step-number">2</div>
+          <div class="step-icon">🔐</div>
+          <h4 data-i18n="step2-title">Paga de Forma Segura</h4>
+          <p data-i18n="step2-desc">Completa tu pago de forma segura mediante criptomoneda a través de nuestro procesador de pagos de confianza. Rápido y anónimo.</p>
+        </div>
+
+        <div class="step-card reveal" style="transition-delay:0.2s">
+          <div class="step-number">3</div>
+          <div class="step-icon">⚡</div>
+          <h4 data-i18n="step3-title">Únete al Telegram VIP</h4>
+          <p data-i18n="step3-desc">Obtén acceso instantáneo a nuestro grupo privado de Telegram. Recibe predicciones verificadas antes de cada partido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PLANS ===== -->
+  <section class="section section--lg" id="plans" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__eyebrow" data-i18n="plans-eyebrow">Precios</div>
+        <h2 class="section-header__title" data-i18n-html="plans-title">ELIGE TU <span class="chrome">PLAN</span></h2>
+        <p class="section-header__sub" data-i18n="plans-sub">Todos los planes incluyen acceso VIP a Telegram. Actualiza cuando quieras.</p>
+      </div>
+
+      <div class="plans-grid">
+
+        <!-- Basic Plan -->
+        <div class="plan-card reveal">
+          <div class="plan-name">BÁSICO</div>
+          <div class="plan-price">
+            <span class="plan-price__currency">$</span>
+            <span class="plan-price__amount">150</span>
+            <span class="plan-price__period" data-i18n="basic-period">/mes</span>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="basic-f1">2 predicciones de fútbol diarias</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="basic-f2">Análisis de partidos del fin de semana</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="basic-f3">Acceso VIP privado a Telegram</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="basic-f4">Equipo de analistas expertos</span>
+            </div>
+          </div>
+          <a href="payment.html?plan=basic" class="btn btn--outline btn--full" data-i18n="basic-btn">Obtener Plan Básico</a>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="plan-card plan-card--featured reveal" style="transition-delay:0.12s">
+          <div class="plan-badge">
+            <span class="badge badge--chrome" data-i18n="plan-badge">⭐ Más Popular</span>
+          </div>
+          <div class="plan-name chrome">PREMIUM</div>
+          <div class="plan-price">
+            <span class="plan-price__currency" style="color:var(--chrome-mid)">$</span>
+            <span class="plan-price__amount chrome">300</span>
+            <span class="plan-price__period" data-i18n="prem-period">/mes</span>
+          </div>
+          <div class="plan-divider"></div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f1">6 predicciones de partidos diarias</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f2">Análisis de partidos del fin de semana</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f3">Predicciones enviadas por correo</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f4">Acceso al foro de la comunidad</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f5">Acceso VIP privado a Telegram</span>
+            </div>
+            <div class="plan-feature">
+              <div class="plan-feature__check"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5" /></svg></div>
+              <span data-i18n="prem-f6">Soporte experto prioritario</span>
+            </div>
+          </div>
+          <a href="payment.html?plan=premium" class="btn btn--primary btn--full" data-i18n="prem-btn">Obtener Plan Premium</a>
+        </div>
+
+      </div>
+
+      <p class="text-dim" style="text-align:center; margin-top:var(--sp-6); font-size:13px;" data-i18n="plans-note">
+        Pagos procesados de forma segura mediante criptomoneda. Acceso otorgado en minutos tras la confirmación del pago.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-header__eyebrow" data-i18n="faq-eyebrow">Preguntas Frecuentes</div>
+        <h2 class="section-header__title" data-i18n-html="faq-title">PREGUNTAS <span class="chrome">FRECUENTES</span></h2>
+      </div>
+
+      <div class="faq-list" id="faqList">
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span data-i18n="faq1-q">¿Qué tan precisas son sus predicciones?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p data-i18n="faq1-a">Nuestro sistema analiza años de datos de partidos y el rendimiento actual de los equipos. Garantizamos victorias y nuestras predicciones superan consistentemente los promedios de la industria. La mayoría de los usuarios ven resultados mejorados en su primera semana.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span data-i18n="faq2-q">¿Está segura mi información de pago?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p data-i18n="faq2-a">Usamos encriptación de nivel bancario para todas las transacciones. Tus datos financieros nunca tocan nuestros servidores directamente. Nos asociamos con procesadores de pago de confianza para mantener todo seguro.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span data-i18n="faq3-q">¿Cuándo recibo las predicciones?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p data-i18n="faq3-a">Las predicciones llegan cada mañana antes de los partidos del día. Los miembros Premium reciben alertas en vivo cuando las cuotas cambian significativamente. Tendrás tiempo suficiente para colocar tus apuestas.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span data-i18n="faq4-q">¿Puedo cancelar en cualquier momento?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p data-i18n="faq4-a">Sí. Cancela tu suscripción cuando quieras sin penalizaciones. Tu acceso continúa hasta el final de tu período de facturación.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span data-i18n="faq5-q">¿Qué pasa si las predicciones fallan?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p data-i18n="faq5-a">Nos enfocamos en encontrar ventajas estadísticas y garantías. Nuestro historial habla por sí mismo — si ocurre alguna pérdida, serás ampliamente compensado.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA STRIP ===== -->
+  <section style="padding-block:var(--sp-20); background: var(--bg-alt); border-top: 1px solid var(--border);">
+    <div class="container" style="text-align:center;">
+      <div class="reveal">
+        <div class="section-header__eyebrow" style="margin-bottom:var(--sp-4);" data-i18n="cta-eyebrow">¿Listo para Ganar?</div>
+        <h2 style="margin-bottom:var(--sp-5);" data-i18n-html="cta-title">EMPIEZA A PREDECIR<br /><span class="chrome">CON INTELIGENCIA HOY</span></h2>
+        <p style="color:var(--text-sub); max-width:460px; margin-inline:auto; margin-bottom:var(--sp-8);" data-i18n="cta-sub">
+          Únete a más de 2,400 miembros que confían en Predx para sus predicciones diarias. Cancela en cualquier momento.
+        </p>
+        <div style="display:flex; gap:var(--sp-4); justify-content:center; flex-wrap:wrap;">
+          <a href="payment.html?plan=basic" class="btn btn--outline btn--lg" data-i18n="cta-basic">Básico — $150/mes</a>
+          <a href="payment.html?plan=premium" class="btn btn--primary btn--lg" data-i18n="cta-premium">Premium — $300/mes</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <img src="site assets/logo.png" alt="Predx" class="footer__logo" />
+            <p class="footer__tagline" data-i18n="footer-tagline">Servicio profesional de predicciones deportivas. Análisis experto. Selecciones diarias. Comunidad VIP.</p>
+          </div>
+          <div class="footer__links">
+            <div class="footer__col">
+              <div class="footer__col-title" data-i18n="footer-col1">Sitio</div>
+              <a href="#how-it-works" data-i18n="footer-how">Cómo Funciona</a>
+              <a href="#plans" data-i18n="footer-plans">Planes y Precios</a>
+              <a href="#faq" data-i18n="footer-faq">Preguntas</a>
+            </div>
+            <div class="footer__col">
+              <div class="footer__col-title" data-i18n="footer-col2">Cuenta</div>
+              <a href="login.html" data-i18n="footer-login">Inicio de Sesión</a>
+              <a href="payment.html?plan=basic" data-i18n="footer-basic">Comprar Básico</a>
+              <a href="payment.html?plan=premium" data-i18n="footer-premium">Comprar Premium</a>
+            </div>
+            <div class="footer__col">
+              <div class="footer__col-title" data-i18n="footer-col3">Comunidad</div>
+              <a href="https://t.me/gerentelll" target="_blank" rel="noopener" data-i18n="footer-telegram">Grupo de Telegram</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <p class="footer__copy" data-i18n="footer-copy">© 2025 Predx. Todos los derechos reservados.</p>
+          <p class="footer__disclaimer" data-i18n="footer-disclaimer">
+            Las apuestas deportivas implican riesgo financiero. Predx proporciona análisis y predicciones únicamente con fines informativos. Por favor, apuesta de forma responsable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

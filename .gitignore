@@ -1,0 +1,21 @@
+# Secrets & environment
+.env
+
+# Database (contains member PII)
+*.db
+*.db-shm
+*.db-wal
+
+# Dependencies
+node_modules/
+
+# Screenshots (temp files)
+temporary screenshots/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

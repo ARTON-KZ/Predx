@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmación de Pago — Predx</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- Language toggle -->
+  <button id="langToggle"
+    style="position:fixed; top:16px; right:20px; z-index:200; font-size:12px; font-weight:700; letter-spacing:0.06em; padding:6px 14px; border-radius:20px; border:1px solid var(--border-hover); background:var(--surface); color:var(--text-sub); cursor:pointer; transition:all var(--ease);">
+    English
+  </button>
+
+  <div class="page">
+    <div class="page-card" style="max-width:520px;">
+      <a href="index.html">
+        <img src="site assets/logo.png" alt="Predx" class="page-card__logo" />
+      </a>
+
+      <!-- PENDING STATE -->
+      <div class="pending-state" id="statePending">
+        <div class="pending-spinner"></div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:32px; letter-spacing:0.04em; margin-bottom:var(--sp-2);" data-i18n="suc-pending-h">CONFIRMANDO PAGO</h3>
+          <p style="color:var(--text-sub); font-size:14px;" data-i18n="suc-pending-p">Esperando confirmación de blockchain. Esto generalmente toma 1–3 minutos. Por favor no cierres esta página.</p>
+        </div>
+        <div class="alert alert--info" style="width:100%; font-size:13px;">
+          <span>ℹ</span>
+          <span data-i18n="suc-pending-info">¡Los pagos con cripto requieren confirmación de blockchain. Ten paciencia!</span>
+        </div>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="stateSuccess" style="display:none;">
+        <div class="success-icon">✓</div>
+        <h3 style="font-family:var(--font-display); font-size:36px; letter-spacing:0.04em; margin-bottom:var(--sp-3);" data-i18n-html="suc-title">PAGO <span class="chrome">CONFIRMADO!</span></h3>
+        <p style="color:var(--text-sub); font-size:15px; margin-bottom:var(--sp-8); line-height:1.65;" data-i18n="suc-sub">
+          Tu suscripción está activa. Únete a nuestro grupo privado de Telegram ahora para empezar a recibir predicciones.
+        </p>
+
+        <a href="https://t.me/gerentelll" target="_blank" rel="noopener"
+          class="btn btn--primary btn--full btn--lg"
+          style="margin-bottom:var(--sp-4); font-size:16px;"
+          data-i18n="suc-tg-btn">
+          🚀 Unirse al Grupo VIP de Telegram
+        </a>
+
+        <div class="alert alert--info" style="text-align:left; margin-bottom:var(--sp-6);">
+          <span>ℹ</span>
+          <div>
+            <strong style="display:block; margin-bottom:2px;" data-i18n="suc-next-h">Próximo paso:</strong>
+            <span data-i18n-html="suc-next-p">Una vez que el administrador te verifique en Telegram, recibirás un <strong>código de acceso</strong> personal por DM. Úsalo para iniciar sesión en tu cuenta de miembro.</span>
+          </div>
+        </div>
+
+        <a href="login.html"
+          style="font-size:13px; color:var(--text-dim); transition:color var(--ease);"
+          onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'"
+          data-i18n="suc-login-link">
+          ¿Ya tienes tu código? Inicia sesión en tu cuenta →
+        </a>
+      </div>
+
+      <!-- FAILED STATE -->
+      <div class="failed-state" id="stateFailed" style="display:none;">
+        <div class="failed-icon">✕</div>
+        <h3 style="font-family:var(--font-display); font-size:36px; letter-spacing:0.04em; margin-bottom:var(--sp-3);" data-i18n-html="suc-fail-h">PAGO <span style="color:var(--red);">FALLIDO</span></h3>
+        <p style="color:var(--text-sub); font-size:14px; margin-bottom:var(--sp-6); line-height:1.65;" data-i18n="suc-fail-p">
+          Tu pago no pudo completarse. No se han cobrado fondos. Por favor intenta de nuevo o contacta al soporte en Telegram.
+        </p>
+        <div style="display:flex; gap:var(--sp-3); flex-wrap:wrap; justify-content:center;">
+          <a href="index.html#plans" class="btn btn--outline" data-i18n="suc-retry">Intentar de Nuevo</a>
+          <a href="https://t.me/gerentelll" target="_blank" rel="noopener" class="btn btn--ghost" data-i18n="suc-support">Contactar Soporte</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script>
+    const API_BASE = 'http://localhost:3001';
+    const params  = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+
+    const pendingEl = document.getElementById('statePending');
+    const successEl = document.getElementById('stateSuccess');
+    const failedEl  = document.getElementById('stateFailed');
+
+    function showState(state) {
+      pendingEl.style.display = state === 'pending' ? 'flex'  : 'none';
+      successEl.style.display = state === 'paid'    ? 'block' : 'none';
+      failedEl.style.display  = state === 'failed'  ? 'block' : 'none';
+    }
+
+    if (!orderId) {
+      showState('failed');
+    } else {
+      let pollCount = 0;
+      const MAX_POLLS = 80;
+
+      async function poll() {
+        try {
+          const res  = await fetch(`${API_BASE}/api/payment/status/${orderId}`);
+          const data = await res.json();
+          if (data.status === 'paid')   { showState('paid');   return; }
+          if (data.status === 'failed') { showState('failed'); return; }
+          pollCount++;
+          if (pollCount >= MAX_POLLS) { showState('failed'); return; }
+          setTimeout(poll, 3000);
+        } catch {
+          pollCount++;
+          if (pollCount >= MAX_POLLS) showState('failed');
+          else setTimeout(poll, 5000);
+        }
+      }
+
+      showState('pending');
+      poll();
+    }
+  </script>
+</body>
+</html>

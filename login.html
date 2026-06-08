@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión — Predx</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- Language toggle -->
+  <button id="langToggle"
+    style="position:fixed; top:16px; right:20px; z-index:200; font-size:12px; font-weight:700; letter-spacing:0.06em; padding:6px 14px; border-radius:20px; border:1px solid var(--border-hover); background:var(--surface); color:var(--text-sub); cursor:pointer; transition:all var(--ease);">
+    English
+  </button>
+
+  <!-- Background orbs -->
+  <div style="position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;">
+    <div style="position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(96,130,220,0.08) 0%, transparent 70%); top:-100px; right:-100px; filter:blur(60px);"></div>
+    <div style="position:absolute; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, rgba(160,165,215,0.06) 0%, transparent 70%); bottom:-80px; left:-80px; filter:blur(60px);"></div>
+  </div>
+
+  <div class="page" style="position:relative; z-index:1;">
+    <div class="page-card" id="loginCard">
+      <a href="index.html">
+        <img src="site assets/logo.png" alt="Predx" class="page-card__logo" />
+      </a>
+
+      <!-- ===== STEP 1: Email + Password ===== -->
+      <div id="step1">
+        <h2 class="page-card__title" data-i18n-html="login-title">INICIO DE <span class="chrome">SESIÓN</span></h2>
+        <p class="page-card__sub" data-i18n="login-sub">Ingresa tu correo electrónico y la contraseña enviada por el administrador.</p>
+
+        <div id="step1Error" class="alert alert--error" style="display:none; margin-bottom:var(--sp-5);">
+          <span>⚠</span>
+          <span id="step1ErrorText"></span>
+        </div>
+
+        <form id="step1Form" style="display:flex; flex-direction:column; gap:var(--sp-5);">
+          <div class="form-group">
+            <label class="form-label" for="email" data-i18n="login-email-label">Correo Electrónico</label>
+            <input
+              class="form-input"
+              type="email"
+              id="email"
+              data-i18n-placeholder="login-email-ph"
+              placeholder="tu@ejemplo.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password" data-i18n="login-pass-label">Contraseña</label>
+            <input
+              class="form-input"
+              type="password"
+              id="password"
+              data-i18n-placeholder="login-pass-ph"
+              placeholder="Ingresa tu contraseña"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full btn--lg" id="step1Btn">
+            <span id="step1BtnText" data-i18n="login-continue">Continuar</span>
+            <span id="step1Spinner" class="spinner" style="display:none;"></span>
+          </button>
+        </form>
+
+        <div style="margin-top:var(--sp-8); padding-top:var(--sp-6); border-top:1px solid var(--border); display:flex; flex-direction:column; gap:var(--sp-3);">
+          <p style="font-size:13px; color:var(--text-dim); text-align:center;" data-i18n="login-no-account">
+            ¿No tienes cuenta? Suscríbete para obtener acceso.
+          </p>
+          <a href="index.html#plans" class="btn btn--outline btn--full" style="font-size:14px;" data-i18n="login-view-plans">Ver Planes</a>
+          <a href="index.html" style="text-align:center; font-size:13px; color:var(--text-dim); transition:color var(--ease);"
+            onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'"
+            data-i18n="login-back">
+            ← Volver al inicio
+          </a>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: OTP Verification ===== -->
+      <div id="step2" style="display:none;">
+        <div style="display:flex; align-items:center; gap:var(--sp-3); margin-bottom:var(--sp-6);">
+          <button id="backBtn"
+            style="width:32px; height:32px; border-radius:50%; border:1px solid var(--border-hover); background:transparent; color:var(--text-sub); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all var(--ease); flex-shrink:0;"
+            onmouseover="this.style.background='var(--elevated)'; this.style.color='var(--text)'"
+            onmouseout="this.style.background='transparent'; this.style.color='var(--text-sub)'">
+            ←
+          </button>
+          <div>
+            <h2 style="font-family:var(--font-display); font-size:30px; letter-spacing:0.04em; line-height:1;" data-i18n-html="otp-title">VERIFICAR <span class="chrome">IDENTIDAD</span></h2>
+          </div>
+        </div>
+
+        <div class="alert alert--info" style="margin-bottom:var(--sp-6);">
+          <span>🔐</span>
+          <div style="font-size:13px; line-height:1.55;" data-i18n-html="otp-info">
+            Ingresa el <strong>código de acceso</strong> enviado por el administrador vía Telegram para completar el inicio de sesión.
+          </div>
+        </div>
+
+        <div id="step2Error" class="alert alert--error" style="display:none; margin-bottom:var(--sp-5);">
+          <span>⚠</span>
+          <span id="step2ErrorText"></span>
+        </div>
+
+        <form id="step2Form" style="display:flex; flex-direction:column; gap:var(--sp-5);">
+          <div class="form-group">
+            <label class="form-label" for="otp" data-i18n="otp-label">Código de Acceso</label>
+            <input
+              class="form-input"
+              type="text"
+              id="otp"
+              data-i18n-placeholder="otp-ph"
+              placeholder="ej. X7KP2MQA"
+              autocomplete="off"
+              maxlength="8"
+              spellcheck="false"
+              style="letter-spacing:0.18em; text-transform:uppercase; font-size:20px; font-weight:700; text-align:center;"
+              required
+            />
+            <span style="font-size:12px; color:var(--text-dim); text-align:center; display:block;" data-i18n="otp-hint">Código de 8 caracteres de tu mensaje de Telegram</span>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full btn--lg" id="step2Btn">
+            <span id="step2BtnText" data-i18n="otp-signin">Iniciar Sesión</span>
+            <span id="step2Spinner" class="spinner" style="display:none;"></span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

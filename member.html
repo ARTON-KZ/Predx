@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Cuenta — Predx</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body class="member-page">
+
+  <!-- HEADER -->
+  <header class="member-header">
+    <div class="container">
+      <div class="member-header__inner">
+        <a href="index.html">
+          <img src="site assets/logo.png" alt="Predx" class="member-header__logo" />
+        </a>
+        <div style="display:flex; align-items:center; gap:var(--sp-3);">
+          <button id="langToggle"
+            style="font-size:12px; font-weight:700; letter-spacing:0.06em; padding:5px 14px; border-radius:20px; border:1px solid var(--border-hover); background:transparent; color:var(--text-sub); cursor:pointer; transition:all var(--ease);">
+            English
+          </button>
+          <button id="logoutBtn" class="btn btn--ghost" style="font-size:13px; color:var(--text-sub);" data-i18n="member-signout">Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="member-content">
+    <div class="container">
+
+      <!-- Welcome Banner -->
+      <div class="member-welcome">
+        <div>
+          <div class="member-plan-badge" id="planBadge">— Plan</div>
+          <div class="member-name" id="memberName">Bienvenido</div>
+          <p style="color:var(--text-sub); font-size:14px; margin-top:var(--sp-2);" data-i18n="member-sub">
+            Tu suscripción está activa. Consulta el grupo de Telegram para las predicciones de hoy.
+          </p>
+        </div>
+        <a href="https://t.me/gerentelll" target="_blank" rel="noopener"
+          class="btn btn--primary btn--lg"
+          style="flex-shrink:0;"
+          data-i18n="member-tg-btn">
+          🚀 Abrir Grupo de Telegram
+        </a>
+      </div>
+
+      <!-- Today's Predictions Feed -->
+      <div style="margin-bottom:var(--sp-8);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--sp-5); flex-wrap:wrap; gap:var(--sp-3);">
+          <h3 style="font-family:var(--font-display); font-size:26px; letter-spacing:0.04em; line-height:1;" data-i18n-html="member-today">SELECCIONES <span class="chrome">DE HOY</span></h3>
+          <span id="picksDate" style="font-size:13px; color:var(--text-dim);"></span>
+        </div>
+        <div id="predictionsGrid"></div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="card" style="margin-bottom:var(--sp-6);">
+        <h4 style="font-family:var(--font-display); font-size:22px; letter-spacing:0.04em; margin-bottom:var(--sp-4);" data-i18n="member-how-title">CÓMO USAR TU MEMBRESÍA</h4>
+        <div style="display:flex; flex-direction:column; gap:var(--sp-4);">
+          <div style="display:flex; gap:var(--sp-4); align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--elevated); border:1px solid var(--border-accent); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:16px; flex-shrink:0;">1</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; margin-bottom:2px;" data-i18n="member-s1-title">Únete al Grupo de Telegram</div>
+              <div style="font-size:13px; color:var(--text-sub);" data-i18n="member-s1-desc">Haz clic en el botón de arriba para abrir nuestro grupo privado de Telegram donde se publican predicciones diariamente.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:var(--sp-4); align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--elevated); border:1px solid var(--border-accent); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:16px; flex-shrink:0;">2</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; margin-bottom:2px;" data-i18n="member-s2-title">Revisa las Predicciones Diariamente</div>
+              <div style="font-size:13px; color:var(--text-sub);" data-i18n="member-s2-desc">Las predicciones se publican cada mañana antes de los partidos. Siempre verifica las cuotas en tu casa de apuestas antes de apostar.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:var(--sp-4); align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--elevated); border:1px solid var(--border-accent); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:16px; flex-shrink:0;">3</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; margin-bottom:2px;" data-i18n="member-s3-title">Renovar Mensualmente</div>
+              <div style="font-size:13px; color:var(--text-sub);" data-i18n="member-s3-desc">Tu suscripción se renueva mensualmente. Contacta al administrador en Telegram para renovar antes del vencimiento y mantener el acceso.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Telegram CTA -->
+      <div style="background:var(--elevated); border:1px solid var(--border-accent); border-radius:var(--r-xl); padding:var(--sp-8); display:flex; align-items:center; justify-content:space-between; gap:var(--sp-6); flex-wrap:wrap;">
+        <div>
+          <h4 style="font-family:var(--font-display); font-size:24px; letter-spacing:0.04em; margin-bottom:var(--sp-2);" data-i18n="member-help-title">¿NECESITAS AYUDA?</h4>
+          <p style="font-size:14px; color:var(--text-sub);" data-i18n="member-help-desc">Contacta al administrador directamente en Telegram para cualquier pregunta sobre tu suscripción o predicciones.</p>
+        </div>
+        <a href="https://t.me/gerentelll" target="_blank" rel="noopener" class="btn btn--outline" data-i18n="member-msg-admin">Mensaje al Admin</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script>
+    const API_BASE   = 'http://localhost:3001';
+    const TOKEN_KEY  = 'predx_member_token';
+    const MEMBER_KEY = 'predx_member_info';
+
+    function getToken()  { return localStorage.getItem(TOKEN_KEY); }
+    function getMember() { try { return JSON.parse(localStorage.getItem(MEMBER_KEY)); } catch { return null; } }
+    function clearAuth() {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(MEMBER_KEY);
+      localStorage.removeItem('predx_temp_token');
+    }
+    function esc(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    if (!getToken()) { window.location.href = 'login.html'; }
+    const member = getMember();
+    if (!member) { clearAuth(); window.location.href = 'login.html'; }
+
+    document.getElementById('memberName').textContent = member.full_name || 'Miembro';
+
+    function updatePlanBadge() {
+      const t = window.predxI18n ? window.predxI18n.t : k => k;
+      const isPrem = member.plan === 'premium';
+      document.getElementById('planBadge').textContent =
+        (isPrem ? t('member-plan-premium') : t('member-plan-basic')) + ' Plan';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      clearAuth();
+      window.location.href = 'login.html';
+    });
+
+    // === Live Predictions ===
+    function renderPredictions(picks, date) {
+      const grid = document.getElementById('predictionsGrid');
+      const t = window.predxI18n ? window.predxI18n.t : k => k;
+
+      if (date) {
+        document.getElementById('picksDate').textContent =
+          new Date(date + 'T12:00:00').toLocaleDateString(
+            window.predxI18n ? (window.predxI18n.getLang() === 'es' ? 'es-ES' : 'en-GB') : 'es-ES',
+            { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+          );
+      }
+
+      if (!picks || picks.length === 0) {
+        grid.innerHTML = `
+          <div style="text-align:center; padding:var(--sp-12); color:var(--text-dim); background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl);">
+            <div style="font-size:36px; margin-bottom:var(--sp-3);">⏳</div>
+            <div style="font-size:15px; font-weight:600; color:var(--text-sub); margin-bottom:var(--sp-2);">${t('member-no-picks-h')}</div>
+            <div style="font-size:13px;">${t('member-no-picks-p')}</div>
+          </div>`;
+        return;
+      }
+
+      const resultMap = {
+        win:     { label: t('member-res-win'),     color: '#22C55E' },
+        loss:    { label: t('member-res-loss'),    color: '#EF4444' },
+        pending: { label: t('member-res-pending'), color: '#9CA3AF' },
+      };
+
+      grid.innerHTML = '';
+      picks.forEach(p => {
+        const r = resultMap[p.result] || resultMap.pending;
+        const isPrem = p.plan === 'premium';
+        const planLabel = isPrem ? t('member-plan-premium') : t('member-plan-basic');
+        const planColor = isPrem ? '#C8A96B' : '#6B8EC8';
+        const card = document.createElement('div');
+        card.style.cssText = `background:var(--surface); border:1px solid ${isPrem ? 'rgba(200,169,107,0.25)' : 'var(--border)'}; border-radius:var(--r-xl); padding:var(--sp-5) var(--sp-6); margin-bottom:var(--sp-4); display:flex; flex-direction:column; gap:var(--sp-3);`;
+        card.innerHTML = `
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-4); flex-wrap:wrap;">
+            <div>
+              <div style="font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px;">
+                ${esc(p.home_team)} <span style="color:var(--text-dim); font-weight:400;">vs</span> ${esc(p.away_team)}
+              </div>
+              ${p.league ? `<div style="font-size:12px; color:var(--text-dim); letter-spacing:0.04em;">${esc(p.league)}</div>` : ''}
+            </div>
+            <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; padding:4px 10px; border-radius:6px; color:${r.color}; background:${r.color}18; border:1px solid ${r.color}40; white-space:nowrap;">${r.label}</span>
+          </div>
+          <div style="font-size:15px; color:var(--text-sub);">
+            <span style="color:var(--text-dim); font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;">${t('member-tip-label')}</span>
+            <span style="font-weight:600; color:var(--text); margin-left:6px;">${esc(p.prediction)}</span>
+          </div>
+          <div style="display:flex; gap:var(--sp-3); flex-wrap:wrap; align-items:center;">
+            ${p.odds ? `<span style="font-size:13px; background:var(--elevated); border:1px solid var(--border); border-radius:6px; padding:3px 10px; color:var(--text-sub);">${t('member-odds-label')}: <strong style="color:var(--text);">${esc(p.odds)}</strong></span>` : ''}
+            <span style="font-size:12px; font-weight:600; padding:3px 10px; border-radius:6px; color:${planColor}; background:${planColor}18; border:1px solid ${planColor}40;">${planLabel}</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    let cachedPicks = null;
+    let cachedDate  = null;
+
+    async function loadPredictions() {
+      const grid = document.getElementById('predictionsGrid');
+      const t = window.predxI18n ? window.predxI18n.t : k => k;
+      grid.innerHTML = `<div style="display:flex; align-items:center; gap:12px; padding:var(--sp-6); color:var(--text-dim); font-size:14px;"><div class="spinner"></div> ${t('member-loading')}</div>`;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/member/predictions`, {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        });
+        if (res.status === 401) { clearAuth(); window.location.href = 'login.html'; return; }
+        const data = await res.json();
+        cachedPicks = data.predictions || [];
+        cachedDate  = data.date;
+        renderPredictions(cachedPicks, cachedDate);
+      } catch {
+        grid.innerHTML = `<div style="text-align:center; padding:var(--sp-8); color:var(--text-dim); background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl);"><div style="font-size:13px;">${window.predxI18n ? window.predxI18n.t('member-error-picks') : 'Could not load picks.'}</div></div>`;
+      }
+    }
+
+    // Re-render picks on language change
+    document.addEventListener('predx:langchange', () => {
+      updatePlanBadge();
+      if (cachedPicks !== null) renderPredictions(cachedPicks, cachedDate);
+    });
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      updatePlanBadge();
+      loadPredictions();
+    });
+  </script>
+</body>
+</html>

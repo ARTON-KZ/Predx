@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pago — Predx</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- Language toggle (fixed top-right) -->
+  <button id="langToggle"
+    style="position:fixed; top:16px; right:20px; z-index:200; font-size:12px; font-weight:700; letter-spacing:0.06em; padding:6px 14px; border-radius:20px; border:1px solid var(--border-hover); background:var(--surface); color:var(--text-sub); cursor:pointer; transition:all var(--ease);">
+    English
+  </button>
+
+  <div class="payment-layout">
+
+    <!-- LEFT: Plan Summary -->
+    <div class="payment-summary">
+      <a href="index.html" style="display:inline-block; margin-bottom:var(--sp-10);">
+        <img src="site assets/logo.png" alt="Predx" style="height:32px;" />
+      </a>
+
+      <div>
+        <p class="text-muted" style="font-size:13px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; margin-bottom:var(--sp-2);" data-i18n="pay-order">Tu Pedido</p>
+
+        <div class="plan-summary-card">
+          <div id="planBadge" style="margin-bottom:var(--sp-3);"></div>
+          <div class="plan-summary-name" id="planName">—</div>
+          <div class="plan-summary-price" id="planPrice">—</div>
+          <hr class="divider" style="margin-bottom:var(--sp-5);" />
+          <div class="plan-summary-features" id="planFeatures"></div>
+        </div>
+
+        <div style="margin-top:var(--sp-6); padding:var(--sp-5); background:var(--elevated); border-radius:var(--r); border:1px solid var(--border);">
+          <div style="display:flex; align-items:center; gap:var(--sp-3); margin-bottom:var(--sp-3);">
+            <span style="font-size:18px;">🔐</span>
+            <span style="font-size:13px; font-weight:600; color:var(--text);" data-i18n="pay-secure-title">Pago Seguro con Cripto</span>
+          </div>
+          <p style="font-size:12px; color:var(--text-sub); line-height:1.65;" data-i18n="pay-secure-desc">
+            Los pagos se procesan de forma segura a través de Heleket. Aceptamos USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.
+          </p>
+        </div>
+
+        <div style="margin-top:var(--sp-4); display:flex; align-items:center; gap:var(--sp-2);">
+          <span style="font-size:14px;">⚡</span>
+          <span style="font-size:13px; color:var(--text-dim);" data-i18n="pay-access">Acceso otorgado en minutos tras la confirmación</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Payment Form -->
+    <div class="payment-form-wrap">
+      <div style="max-width:400px; width:100%;">
+        <h2 style="margin-bottom:var(--sp-2);" data-i18n-html="pay-title">COMPLETAR <span class="chrome">PAGO</span></h2>
+        <p style="color:var(--text-sub); font-size:14px; margin-bottom:var(--sp-8);" data-i18n="pay-sub">Ingresa tus datos a continuación para continuar a la página de pago.</p>
+
+        <div id="errorBanner" class="alert alert--error" style="display:none; margin-bottom:var(--sp-5);">
+          <span>⚠</span>
+          <span id="errorText"></span>
+        </div>
+
+        <form id="paymentForm" style="display:flex; flex-direction:column; gap:var(--sp-5);">
+          <div class="form-group">
+            <label class="form-label" for="fullName" data-i18n="pay-name-label">Nombre Completo</label>
+            <input
+              class="form-input"
+              type="text"
+              id="fullName"
+              name="fullName"
+              data-i18n-placeholder="pay-name-ph"
+              placeholder="Juan Pérez"
+              autocomplete="name"
+              required
+            />
+            <span class="form-error" id="nameError" data-i18n="pay-name-error">Por favor ingresa tu nombre completo.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email" data-i18n="pay-email-label">Correo Electrónico</label>
+            <input
+              class="form-input"
+              type="email"
+              id="email"
+              name="email"
+              data-i18n-placeholder="pay-email-ph"
+              placeholder="tu@ejemplo.com"
+              autocomplete="email"
+              required
+            />
+            <span class="form-error" id="emailError" data-i18n="pay-email-error">Por favor ingresa un correo electrónico válido.</span>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn" style="margin-top:var(--sp-2);">
+            <span id="btnText" data-i18n="pay-btn">Pagar con Cripto</span>
+            <span id="btnSpinner" class="spinner" style="display:none;"></span>
+          </button>
+
+          <p style="font-size:12px; color:var(--text-dim); text-align:center; line-height:1.6;" data-i18n="pay-terms">
+            Al continuar, aceptas nuestros términos. Serás redirigido a una página de pago segura. Regresa aquí después del pago para confirmar.
+          </p>
+        </form>
+
+        <div style="margin-top:var(--sp-8); padding-top:var(--sp-6); border-top:1px solid var(--border);">
+          <a href="index.html" style="font-size:13px; color:var(--text-dim); display:inline-flex; align-items:center; gap:var(--sp-2); transition:color var(--ease);"
+            onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'"
+            data-i18n="pay-back">
+            ← Volver al inicio
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/payment.js"></script>
+</body>
+</html>
