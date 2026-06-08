@@ -415,6 +415,14 @@ p { line-height: 1.7; }
 @media (max-width: 600px) {
   .container { padding-inline: var(--sp-4); }
   .section { padding-block: var(--sp-16); }
-  .section--lg { padding-block: var(--sp-20); }
-  .card { padding: var(--sp-6); }
+  .section--lg { padding-block: var(--sp-16); }
+  .card { padding: var(--sp-5); }
+}
+
+@media (max-width: 480px) {
+  .section { padding-block: var(--sp-12); }
+  .btn { min-height: 46px; }
+  .btn--lg { min-height: 52px; padding: 14px 24px; font-size: 14px; }
+  h1 { font-size: clamp(44px, 12vw, 80px); }
+  h2 { font-size: clamp(30px, 8vw, 52px); }
 }
