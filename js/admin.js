@@ -1,6 +1,6 @@
 /* Predx — Admin Dashboard JavaScript */
 
-const API_BASE = 'http://localhost:3001';
+const API_BASE = window.API_BASE || 'http://localhost:3001';
 const ADMIN_TOKEN_KEY = 'predx_admin_token';
 
 let allMembers = [];

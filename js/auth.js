@@ -1,6 +1,6 @@
 /* Predx — Auth Utilities */
 
-const API_BASE = 'http://localhost:3001';
+const API_BASE = window.API_BASE || 'http://localhost:3001';
 const TOKEN_KEY      = 'predx_member_token';
 const MEMBER_KEY     = 'predx_member_info';
 const TEMP_TOKEN_KEY = 'predx_temp_token';

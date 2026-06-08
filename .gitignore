@@ -12,6 +12,12 @@ node_modules/
 # Screenshots (temp files)
 temporary screenshots/
 
+# Internal dev files
+CLAUDE.md
+backend-err.txt
+backend-out.txt
+*.txt
+
 # OS files
 .DS_Store
 Thumbs.db

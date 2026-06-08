@@ -1,6 +1,6 @@
 /* Predx — Payment Page JavaScript */
 
-const API_BASE = 'http://localhost:3001';
+const API_BASE = window.API_BASE || 'http://localhost:3001';
 
 function getLang() {
   return (window.predxI18n ? window.predxI18n.getLang() : null) ||
