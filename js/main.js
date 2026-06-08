@@ -10,6 +10,21 @@ if (navbar) {
   onScroll();
 }
 
+// === Mobile burger menu ===
+const burger = document.getElementById('navBurger');
+if (burger && navbar) {
+  burger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navbar.classList.toggle('navbar--open');
+  });
+  document.querySelectorAll('.navbar__mobile-link, .navbar__mobile-actions a').forEach(el => {
+    el.addEventListener('click', () => navbar.classList.remove('navbar--open'));
+  });
+  document.addEventListener('click', (e) => {
+    if (!navbar.contains(e.target)) navbar.classList.remove('navbar--open');
+  });
+}
+
 // === Reveal on scroll ===
 const revealObserver = new IntersectionObserver(
   (entries) => {

@@ -25,7 +25,20 @@
         </div>
         <div class="navbar__actions">
           <button id="langToggle" class="btn btn--ghost" style="font-size:12px; font-weight:700; letter-spacing:0.06em; padding:6px 14px; border-radius:20px;">English</button>
-          <a href="login.html" class="btn btn--ghost" data-i18n="nav-login">Iniciar Sesión</a>
+          <a href="login.html" class="btn btn--ghost navbar__desktop-only" data-i18n="nav-login">Iniciar Sesión</a>
+          <a href="#plans" class="btn btn--primary navbar__desktop-only" data-i18n="nav-start">Comenzar</a>
+          <button class="navbar__burger" id="navBurger" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile dropdown menu -->
+      <div class="navbar__mobile-menu" id="navMobileMenu">
+        <a href="#how-it-works" class="navbar__mobile-link" data-i18n="nav-how">Cómo Funciona</a>
+        <a href="#plans" class="navbar__mobile-link" data-i18n="nav-plans">Planes</a>
+        <a href="#faq" class="navbar__mobile-link" data-i18n="nav-faq">Preguntas</a>
+        <div class="navbar__mobile-actions">
+          <a href="login.html" class="btn btn--outline" data-i18n="nav-login">Iniciar Sesión</a>
           <a href="#plans" class="btn btn--primary" data-i18n="nav-start">Comenzar</a>
         </div>
       </div>
