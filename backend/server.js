@@ -9,6 +9,8 @@ const webhookRoutes = require('./routes/webhook');
 const adminRoutes  = require('./routes/admin');
 const authRoutes   = require('./routes/auth');
 const memberRoutes = require('./routes/member');
+const { stmts } = require('./db');
+const paymento = require('./paymento');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -47,7 +49,33 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error.' });
 });
 
+// Reconciliation sweep: re-checks pending orders with Paymento so payments
+// register even when the customer closed the browser and no IPN arrived.
+async function sweepPendingPayments() {
+  let pending;
+  try {
+    pending = stmts.getPendingPayments.all();
+  } catch (err) {
+    console.error('Pending sweep query failed:', err.message);
+    return;
+  }
+  for (const row of pending) {
+    try {
+      const v = await paymento.verifyPayment(row.invoice_uuid);
+      const status = v.success ? 'paid' : paymento.mapOrderStatus(v.orderStatus);
+      if (status !== 'pending') {
+        stmts.updateStatusByOrderId.run({ status, order_id: row.order_id });
+        console.log(`Sweep: order ${row.order_id} -> ${status}`);
+      }
+    } catch (e) {
+      // Gateway/network hiccup — retried on the next sweep
+    }
+  }
+}
+
 app.listen(PORT, () => {
   console.log(`Predx backend running on http://localhost:${PORT}`);
   console.log(`Webhook endpoint: http://localhost:${PORT}/api/webhook/paymento`);
+  sweepPendingPayments();
+  setInterval(sweepPendingPayments, 60_000);
 });

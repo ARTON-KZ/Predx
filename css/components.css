@@ -1494,6 +1494,79 @@
 
 .badge .icon { width: 11px; height: 11px; }
 
+/* === Pending payment banner (bottom toast) === */
+.pending-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px 12px 10px 18px;
+  background: var(--elevated);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-full);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+  color: var(--text-sub);
+  max-width: calc(100vw - 32px);
+  animation: banner-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes banner-in {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.pending-banner__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: banner-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes banner-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.pending-banner__link {
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity var(--ease);
+}
+.pending-banner__link:hover { opacity: 0.75; }
+.pending-banner__link:focus-visible { outline: 2px solid var(--chrome-mid); outline-offset: 2px; border-radius: 4px; }
+.pending-banner__link:active { opacity: 0.6; }
+
+.pending-banner__close {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--ease), color var(--ease);
+}
+.pending-banner__close svg { width: 12px; height: 12px; }
+.pending-banner__close:hover { background: var(--surface); color: var(--text); }
+.pending-banner__close:focus-visible { outline: 2px solid var(--chrome-mid); outline-offset: 2px; }
+.pending-banner__close:active { transform: scale(0.92); }
+
+@media (max-width: 480px) {
+  .pending-banner { font-size: 12px; gap: var(--sp-2); bottom: 14px; }
+}
+
 /* TEMPORARY: $5 test-plan strip — delete together with the test plan */
 .test-plan-strip {
   margin-top: var(--sp-8);

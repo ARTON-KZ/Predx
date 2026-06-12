@@ -145,8 +145,11 @@
 
     /* ── SUCCESS PAGE ── */
     'suc-pending-h':    { es: 'CONFIRMANDO PAGO', en: 'CONFIRMING PAYMENT' },
-    'suc-pending-p':    { es: 'Esperando confirmación de blockchain. Esto generalmente toma 1–3 minutos. Por favor no cierres esta página.', en: 'Waiting for blockchain confirmation. This usually takes 1–3 minutes. Please do not close this page.' },
-    'suc-pending-info': { es: '¡Los pagos con cripto requieren confirmación de blockchain. Ten paciencia!', en: 'Crypto payments require blockchain confirmation. Hang tight!' },
+    'suc-pending-p':    { es: 'Esperando confirmación de blockchain. Puede tomar de unos minutos hasta una hora según la criptomoneda. Puedes cerrar esta página — tu pago se registrará automáticamente.', en: 'Waiting for blockchain confirmation. This can take from a few minutes up to an hour depending on the cryptocurrency. You can close this page — your payment will register automatically.' },
+    'suc-pending-info': { es: 'Tras la confirmación, únete al grupo de Telegram para recibir tu acceso. Si cierras esta página, puedes volver cuando quieras para ver el estado.', en: 'Once confirmed, join the Telegram group to receive your access. If you close this page you can come back anytime to check the status.' },
+    'suc-still-pending':{ es: 'Aún esperando confirmación. Es seguro cerrar esta página — tu acceso se otorgará en cuanto se confirme el pago.', en: 'Still waiting for confirmation. It is safe to close this page — your access will be granted as soon as the payment confirms.' },
+    'banner-pending':      { es: 'Tienes un pago en proceso.', en: 'You have a payment in progress.' },
+    'banner-pending-link': { es: 'Ver estado →',               en: 'View status →' },
     'suc-title': {
       es: 'PAGO <span class="chrome">CONFIRMADO!</span>',
       en: 'PAYMENT <span class="chrome">CONFIRMED!</span>',

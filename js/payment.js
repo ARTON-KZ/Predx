@@ -149,6 +149,11 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
+    // Remember the order so the user can check status even after closing the gateway
+    try {
+      localStorage.setItem('predx_pending_order', JSON.stringify({ order_id: data.order_id, ts: Date.now() }));
+    } catch {}
+
     window.location.href = data.payment_url;
   } catch {
     setLoading(false);

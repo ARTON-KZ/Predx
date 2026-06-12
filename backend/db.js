@@ -71,6 +71,12 @@ const stmts = {
     WHERE invoice_uuid = @invoice_uuid
   `),
 
+  getPendingPayments: db.prepare(`
+    SELECT order_id, invoice_uuid FROM payments
+    WHERE status = 'pending' AND invoice_uuid IS NOT NULL
+      AND created_at > datetime('now', '-48 hours')
+  `),
+
   getPaidUsers: db.prepare(`
     SELECT id, full_name, email, plan, amount, status,
            otp, otp_issued, otp_generated_at, member_password, created_at

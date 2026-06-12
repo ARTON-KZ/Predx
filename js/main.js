@@ -112,6 +112,39 @@ setTimeout(() => {
   });
 }, 1800);
 
+// === Pending payment banner ===
+// If the visitor left for the payment gateway and came back (or closed the
+// tab mid-payment), offer a way back to the live confirmation page.
+(function () {
+  const PENDING_KEY = 'predx_pending_order';
+  const MAX_AGE = 48 * 60 * 60 * 1000;
+
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null'); } catch {}
+  if (!saved || !saved.order_id) return;
+  if (Date.now() - (saved.ts || 0) > MAX_AGE) {
+    try { localStorage.removeItem(PENDING_KEY); } catch {}
+    return;
+  }
+  if (sessionStorage.getItem('predx_pending_banner_dismissed')) return;
+
+  const banner = document.createElement('div');
+  banner.className = 'pending-banner';
+  banner.innerHTML = `
+    <span class="pending-banner__dot"></span>
+    <span data-i18n="banner-pending">Tienes un pago en proceso.</span>
+    <a href="success.html?order_id=${encodeURIComponent(saved.order_id)}" class="pending-banner__link" data-i18n="banner-pending-link">Ver estado →</a>
+    <button class="pending-banner__close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </button>`;
+  document.body.appendChild(banner);
+
+  banner.querySelector('.pending-banner__close').addEventListener('click', () => {
+    sessionStorage.setItem('predx_pending_banner_dismissed', '1');
+    banner.remove();
+  });
+})();
+
 // === Smooth scroll for anchor links ===
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (e) => {
