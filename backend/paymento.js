@@ -15,7 +15,7 @@ function apiHeaders(accept) {
 }
 
 // Creates a payment request; returns the gateway token for redirecting the customer.
-async function createPaymentRequest({ orderId, fiatAmount, email, returnUrl, plan }) {
+async function createPaymentRequest({ orderId, fiatAmount, email, returnUrl }) {
   const res = await axios.post(
     `${PAYMENTO_API}/payment/request`,
     {
@@ -25,7 +25,6 @@ async function createPaymentRequest({ orderId, fiatAmount, email, returnUrl, pla
       orderId,
       Speed: 0,
       EmailAddress: email,
-      additionalData: { plan },
     },
     { headers: apiHeaders('text/plain'), timeout: 15000 }
   );

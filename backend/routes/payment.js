@@ -36,7 +36,6 @@ router.post('/create', async (req, res) => {
       fiatAmount: selectedPlan.amount,
       email: email.toLowerCase().trim(),
       returnUrl,
-      plan,
     });
 
     stmts.insertPayment.run({
