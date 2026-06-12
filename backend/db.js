@@ -1,7 +1,10 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '..', 'predx.db');
+// On Railway, DB_PATH points into the mounted volume (/data/predx.db) so
+// payments and credentials survive redeploys. Locally it falls back to the
+// project root.
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'predx.db');
 const db = new DatabaseSync(DB_PATH);
 
 db.exec(`PRAGMA journal_mode = WAL`);
