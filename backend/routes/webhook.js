@@ -2,60 +2,59 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
 const { stmts } = require('../db');
+const paymento = require('../paymento');
 
-const PAID_STATUSES = new Set(['paid', 'paid_over']);
-const FAILED_STATUSES = new Set(['fail', 'cancel', 'system_fail', 'wrong_amount']);
-
-router.post('/heleket', express.raw({ type: 'application/json' }), (req, res) => {
+// Paymento IPN — set {BASE_URL}/api/webhook/paymento as the IPN URL in the
+// Paymento dashboard. Payloads are signed with HMAC-SHA256 (uppercase hex)
+// using the secret key from the dashboard.
+router.post('/paymento', express.raw({ type: '*/*' }), async (req, res) => {
   try {
-    let rawBody, body;
-
-    if (Buffer.isBuffer(req.body)) {
-      rawBody = req.body;
-      body = JSON.parse(rawBody.toString('utf8'));
-    } else {
+    if (!Buffer.isBuffer(req.body)) {
       return res.status(400).json({ error: 'Invalid request body.' });
     }
+    const rawBody = req.body;
 
-    const { sign, uuid, order_id, status } = body;
+    const signature = String(req.headers['x-hmac-sha256-signature'] || '').toUpperCase();
+    const expected = crypto
+      .createHmac('sha256', process.env.PAYMENTO_SECRET_KEY || '')
+      .update(rawBody)
+      .digest('hex')
+      .toUpperCase();
 
-    if (!sign) {
-      console.warn('Webhook missing sign field');
-      return res.status(400).json({ error: 'Missing signature.' });
-    }
-
-    const base64Body = rawBody.toString('base64');
-    const expectedSign = crypto
-      .createHash('md5')
-      .update(base64Body + process.env.HELEKET_API_KEY)
-      .digest('hex');
-
-    if (expectedSign !== sign) {
-      console.warn('Webhook signature mismatch');
+    const sigBuf = Buffer.from(signature);
+    const expBuf = Buffer.from(expected);
+    if (!signature || sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
+      console.warn('Paymento IPN signature mismatch');
       return res.status(400).json({ error: 'Invalid signature.' });
     }
 
-    let internalStatus;
-    if (PAID_STATUSES.has(status)) {
-      internalStatus = 'paid';
-    } else if (FAILED_STATUSES.has(status)) {
-      internalStatus = 'failed';
-    } else {
-      internalStatus = 'pending';
+    const body = JSON.parse(rawBody.toString('utf8'));
+    const token = body.Token ?? body.token;
+    const orderId = body.OrderId ?? body.orderId;
+    const orderStatus = body.OrderStatus ?? body.orderStatus;
+
+    const internalStatus = paymento.mapOrderStatus(orderStatus);
+
+    // Paymento expects Paid orders to be confirmed via the Verify API
+    // (moves them to Approve and finalizes the payment on their side).
+    if (internalStatus === 'paid' && token) {
+      try {
+        await paymento.verifyPayment(token);
+      } catch (e) {
+        console.warn('Paymento verify after IPN failed:', e.message);
+      }
     }
 
     let updated = false;
-
-    if (uuid) {
-      const result = stmts.updateStatusByInvoiceUuid.run({ status: internalStatus, invoice_uuid: uuid });
+    if (token) {
+      const result = stmts.updateStatusByInvoiceUuid.run({ status: internalStatus, invoice_uuid: token });
       if (result.changes > 0) updated = true;
     }
-
-    if (!updated && order_id) {
-      stmts.updateStatusByOrderId.run({ status: internalStatus, order_id });
+    if (!updated && orderId) {
+      stmts.updateStatusByOrderId.run({ status: internalStatus, order_id: orderId });
     }
 
-    console.log(`Webhook received: order=${order_id}, heleket_status=${status}, internal=${internalStatus}`);
+    console.log(`Paymento IPN: order=${orderId}, paymento_status=${orderStatus}, internal=${internalStatus}`);
     res.status(200).json({ success: true });
   } catch (err) {
     console.error('Webhook processing error:', err.message);

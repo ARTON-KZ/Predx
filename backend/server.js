@@ -18,6 +18,7 @@ app.use(cors({
     process.env.FRONTEND_URL || 'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://predx-woad.vercel.app',
+    'https://arton-kz.github.io',
   ],
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -48,5 +49,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Predx backend running on http://localhost:${PORT}`);
-  console.log(`Webhook endpoint: http://localhost:${PORT}/api/webhook/heleket`);
+  console.log(`Webhook endpoint: http://localhost:${PORT}/api/webhook/paymento`);
 });

@@ -1,20 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
-const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const { stmts } = require('../db');
+const paymento = require('../paymento');
 
 const PLANS = {
   basic: { name: 'Basic', amount: '150.00', amountNum: 150 },
   premium: { name: 'Premium', amount: '300.00', amountNum: 300 },
+  // TEMPORARY: $5 plan for end-to-end payment testing — remove after testing
+  test: { name: 'Test', amount: '5.00', amountNum: 5 },
 };
-
-function buildSign(body) {
-  const bodyStr = JSON.stringify(body);
-  const base64Body = Buffer.from(bodyStr).toString('base64');
-  return crypto.createHash('md5').update(base64Body + process.env.HELEKET_API_KEY).digest('hex');
-}
 
 router.post('/create', async (req, res) => {
   try {
@@ -32,37 +27,17 @@ router.post('/create', async (req, res) => {
 
     const order_id = uuidv4();
     const selectedPlan = PLANS[plan];
-    const webhookUrl = `${process.env.BASE_URL}/api/webhook/heleket`;
-    const returnUrl = `${process.env.FRONTEND_URL}/success.html?order_id=${order_id}`;
+    // Paymento POSTs the customer back to ReturnUrl, which a static frontend can't
+    // accept — so we land on the backend and redirect to success.html from there.
+    const returnUrl = `${process.env.BASE_URL}/api/payment/return?order_id=${order_id}`;
 
-    const invoiceBody = {
-      order_id,
-      amount: selectedPlan.amount,
-      currency: 'USDT',
-      url_callback: webhookUrl,
-      url_return: returnUrl,
-    };
-
-    const sign = buildSign(invoiceBody);
-
-    const heleket = await axios.post(
-      'https://api.heleket.com/v1/payment',
-      invoiceBody,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          merchant: process.env.HELEKET_MERCHANT_ID,
-          sign,
-        },
-        timeout: 15000,
-      }
-    );
-
-    const result = heleket.data?.result;
-    if (!result?.url) {
-      console.error('Heleket response missing payment URL:', heleket.data);
-      return res.status(502).json({ error: 'Payment gateway error. Please try again.' });
-    }
+    const token = await paymento.createPaymentRequest({
+      orderId: order_id,
+      fiatAmount: selectedPlan.amount,
+      email: email.toLowerCase().trim(),
+      returnUrl,
+      plan,
+    });
 
     stmts.insertPayment.run({
       order_id,
@@ -71,25 +46,50 @@ router.post('/create', async (req, res) => {
       full_name: full_name.trim(),
       email: email.toLowerCase().trim(),
     });
+    stmts.updateInvoiceUuid.run({ invoice_uuid: token, order_id });
 
-    if (result.uuid) {
-      stmts.updateInvoiceUuid.run({ invoice_uuid: result.uuid, order_id });
-    }
-
-    res.json({ payment_url: result.url, order_id });
+    res.json({ payment_url: paymento.gatewayUrl(token), order_id });
   } catch (err) {
     console.error('Payment create error:', err?.response?.data || err.message);
     res.status(500).json({ error: 'Failed to create payment. Please try again.' });
   }
 });
 
-router.get('/status/:orderId', (req, res) => {
+// Customer lands here after the Paymento gateway (GET or signed POST) —
+// forward them to the frontend confirmation page, which polls /status.
+const handleReturn = (req, res) => {
+  const orderId =
+    req.query.order_id || req.body?.OrderId || req.body?.orderId || '';
+  const dest = `${process.env.FRONTEND_URL}/success.html?order_id=${encodeURIComponent(orderId)}`;
+  res.redirect(303, dest);
+};
+router.get('/return', handleReturn);
+router.post('/return', express.urlencoded({ extended: true }), handleReturn);
+
+router.get('/status/:orderId', async (req, res) => {
   try {
     const record = stmts.getByOrderId.get(req.params.orderId);
     if (!record) {
       return res.status(404).json({ error: 'Payment record not found.' });
     }
-    res.json({ status: record.status, plan: record.plan, full_name: record.full_name });
+
+    let status = record.status;
+
+    // While pending, double-check with Paymento directly so confirmation
+    // works even if the IPN hasn't arrived yet.
+    if (status === 'pending' && record.invoice_uuid) {
+      try {
+        const v = await paymento.verifyPayment(record.invoice_uuid);
+        status = v.success ? 'paid' : paymento.mapOrderStatus(v.orderStatus);
+        if (status !== record.status) {
+          stmts.updateStatusByOrderId.run({ status, order_id: record.order_id });
+        }
+      } catch (e) {
+        // Gateway unreachable — keep last known status; the IPN will update us.
+      }
+    }
+
+    res.json({ status, plan: record.plan, full_name: record.full_name });
   } catch (err) {
     console.error('Status check error:', err.message);
     res.status(500).json({ error: 'Internal server error.' });

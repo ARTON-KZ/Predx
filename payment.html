@@ -36,16 +36,22 @@
 
         <div style="margin-top:var(--sp-6); padding:var(--sp-5); background:var(--elevated); border-radius:var(--r); border:1px solid var(--border);">
           <div style="display:flex; align-items:center; gap:var(--sp-3); margin-bottom:var(--sp-3);">
-            <span style="font-size:18px;">🔐</span>
+            <svg class="icon" style="width:18px; height:18px; color:var(--chrome-mid);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+              <circle cx="12" cy="15.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
             <span style="font-size:13px; font-weight:600; color:var(--text);" data-i18n="pay-secure-title">Pago Seguro con Cripto</span>
           </div>
           <p style="font-size:12px; color:var(--text-sub); line-height:1.65;" data-i18n="pay-secure-desc">
-            Los pagos se procesan de forma segura a través de Heleket. Aceptamos USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.
+            Los pagos se procesan de forma segura a través de Paymento. Aceptamos Bitcoin, USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.
           </p>
         </div>
 
         <div style="margin-top:var(--sp-4); display:flex; align-items:center; gap:var(--sp-2);">
-          <span style="font-size:14px;">⚡</span>
+          <svg class="icon" style="width:15px; height:15px; color:var(--chrome-mid);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
+          </svg>
           <span style="font-size:13px; color:var(--text-dim);" data-i18n="pay-access">Acceso otorgado en minutos tras la confirmación</span>
         </div>
       </div>
@@ -58,7 +64,11 @@
         <p style="color:var(--text-sub); font-size:14px; margin-bottom:var(--sp-8);" data-i18n="pay-sub">Ingresa tus datos a continuación para continuar a la página de pago.</p>
 
         <div id="errorBanner" class="alert alert--error" style="display:none; margin-bottom:var(--sp-5);">
-          <span>⚠</span>
+          <svg class="icon" style="width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3 2.5 20h19L12 3z" />
+            <path d="M12 9.5v5" />
+            <circle cx="12" cy="17.2" r="0.6" fill="currentColor" stroke="none" />
+          </svg>
           <span id="errorText"></span>
         </div>
 

@@ -25,6 +25,14 @@ const PLANS_DATA = {
     featured: true,
     featureKeys: ['pjs-prem-f1','pjs-prem-f2','pjs-prem-f3','pjs-prem-f4','pjs-prem-f5','pjs-prem-f6'],
   },
+  // TEMPORARY: $5 plan for end-to-end payment testing — remove after testing
+  test: {
+    nameKey:  'pjs-test-name',
+    priceKey: 'pjs-price-test',
+    badgeKey: 'pjs-badge-test',
+    featured: false,
+    featureKeys: ['pjs-test-f1','pjs-test-f2'],
+  },
 };
 
 const params  = new URLSearchParams(window.location.search);
@@ -42,9 +50,10 @@ function renderPlanSummary() {
   const priceEl    = document.getElementById('planPrice');
   const featuresEl = document.getElementById('planFeatures');
 
+  const starSvg = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9 2.9-6z"/></svg>';
   const badgeClass = planData.featured ? 'badge--green' : 'badge--chrome';
   const popularHtml = planData.featured
-    ? `<span class="badge badge--chrome" style="margin-bottom:8px;">${t('pjs-popular')}</span><br />` : '';
+    ? `<span class="badge badge--chrome" style="margin-bottom:8px;">${starSvg}${t('pjs-popular')}</span><br />` : '';
 
   badgeEl.innerHTML = `${popularHtml}<span class="badge ${badgeClass}">${t(planData.badgeKey)}</span>`;
   nameEl.textContent  = t(planData.nameKey);

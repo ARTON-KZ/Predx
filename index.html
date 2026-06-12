@@ -129,21 +129,39 @@
       <div class="steps-grid">
         <div class="step-card reveal">
           <div class="step-number">1</div>
-          <div class="step-icon">📊</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19.5v-5" />
+              <path d="M9.5 19.5v-9" />
+              <path d="M15 19.5v-6" />
+              <path d="M20.5 19.5v-12" />
+              <path d="M4 8.5 9.5 5l5.5 3 5.5-4" />
+            </svg>
+          </div>
           <h4 data-i18n="step1-title">Elige Tu Plan</h4>
           <p data-i18n="step1-desc">Selecciona el plan Básico o Premium que mejor se adapte a tus necesidades. Ambos incluyen predicciones diarias de nuestros analistas expertos.</p>
         </div>
 
         <div class="step-card reveal" style="transition-delay:0.1s">
           <div class="step-number">2</div>
-          <div class="step-icon">🔐</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3l7 3v5.2c0 4.4-3 8-7 9.8-4-1.8-7-5.4-7-9.8V6l7-3z" />
+              <polyline points="9 11.8 11.2 14 15.2 9.6" />
+            </svg>
+          </div>
           <h4 data-i18n="step2-title">Paga de Forma Segura</h4>
           <p data-i18n="step2-desc">Completa tu pago de forma segura mediante criptomoneda a través de nuestro procesador de pagos de confianza. Rápido y anónimo.</p>
         </div>
 
         <div class="step-card reveal" style="transition-delay:0.2s">
           <div class="step-number">3</div>
-          <div class="step-icon">⚡</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21.5 2.5 11 13" />
+              <path d="M21.5 2.5l-6.8 19-3.7-8.5-8.5-3.7 19-6.8z" />
+            </svg>
+          </div>
           <h4 data-i18n="step3-title">Únete al Telegram VIP</h4>
           <p data-i18n="step3-desc">Obtén acceso instantáneo a nuestro grupo privado de Telegram. Recibe predicciones verificadas antes de cada partido.</p>
         </div>
@@ -164,6 +182,13 @@
 
         <!-- Basic Plan -->
         <div class="plan-card reveal">
+          <div class="plan-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.5" />
+              <circle cx="12" cy="12" r="4.5" />
+              <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
           <div class="plan-name">BÁSICO</div>
           <div class="plan-price">
             <span class="plan-price__currency">$</span>
@@ -195,7 +220,16 @@
         <!-- Premium Plan -->
         <div class="plan-card plan-card--featured reveal" style="transition-delay:0.12s">
           <div class="plan-badge">
-            <span class="badge badge--chrome" data-i18n="plan-badge">⭐ Más Popular</span>
+            <span class="badge badge--chrome">
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9 2.9-6z"/></svg>
+              <span data-i18n="plan-badge">Más Popular</span>
+            </span>
+          </div>
+          <div class="plan-icon plan-icon--featured">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m3 6 3.5 11h11L21 6l-5.5 5.5L12 5l-3.5 6.5L3 6z" />
+              <path d="M6.5 20.5h11" />
+            </svg>
           </div>
           <div class="plan-name chrome">PREMIUM</div>
           <div class="plan-price">
@@ -235,6 +269,27 @@
 
       </div>
 
+      <!-- TEMPORARY: $5 test plan for verifying the payment flow — remove after testing -->
+      <div class="test-plan-strip reveal">
+        <div class="test-plan-strip__info">
+          <div class="test-plan-strip__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 2.5v5.5L4.6 18.2A2 2 0 0 0 6.4 21h11.2a2 2 0 0 0 1.8-2.8L14 8V2.5" />
+              <path d="M8.5 2.5h7" />
+              <path d="M7 15.5h10" />
+            </svg>
+          </div>
+          <div>
+            <div class="test-plan-strip__head">
+              <span class="test-plan-strip__title" data-i18n="test-card-title">PLAN DE PRUEBA</span>
+              <span class="badge badge--chrome" data-i18n="test-card-badge">Temporal</span>
+            </div>
+            <p class="test-plan-strip__desc" data-i18n="test-card-desc">Plan de pago único para verificar el sistema de pago.</p>
+          </div>
+        </div>
+        <a href="payment.html?plan=test" class="btn btn--outline" data-i18n="test-card-btn">Probar Pago — $5</a>
+      </div>
+
       <p class="text-dim" style="text-align:center; margin-top:var(--sp-6); font-size:13px;" data-i18n="plans-note">
         Pagos procesados de forma segura mediante criptomoneda. Acceso otorgado en minutos tras la confirmación del pago.
       </p>
@@ -254,7 +309,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span data-i18n="faq1-q">¿Qué tan precisas son sus predicciones?</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span>
           </div>
           <div class="faq-answer">
             <p data-i18n="faq1-a">Nuestro sistema analiza años de datos de partidos y el rendimiento actual de los equipos. Garantizamos victorias y nuestras predicciones superan consistentemente los promedios de la industria. La mayoría de los usuarios ven resultados mejorados en su primera semana.</p>
@@ -264,7 +319,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span data-i18n="faq2-q">¿Está segura mi información de pago?</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span>
           </div>
           <div class="faq-answer">
             <p data-i18n="faq2-a">Usamos encriptación de nivel bancario para todas las transacciones. Tus datos financieros nunca tocan nuestros servidores directamente. Nos asociamos con procesadores de pago de confianza para mantener todo seguro.</p>
@@ -274,7 +329,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span data-i18n="faq3-q">¿Cuándo recibo las predicciones?</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span>
           </div>
           <div class="faq-answer">
             <p data-i18n="faq3-a">Las predicciones llegan cada mañana antes de los partidos del día. Los miembros Premium reciben alertas en vivo cuando las cuotas cambian significativamente. Tendrás tiempo suficiente para colocar tus apuestas.</p>
@@ -284,7 +339,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span data-i18n="faq4-q">¿Puedo cancelar en cualquier momento?</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span>
           </div>
           <div class="faq-answer">
             <p data-i18n="faq4-a">Sí. Cancela tu suscripción cuando quieras sin penalizaciones. Tu acceso continúa hasta el final de tu período de facturación.</p>
@@ -294,7 +349,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span data-i18n="faq5-q">¿Qué pasa si las predicciones fallan?</span>
-            <span class="faq-icon">+</span>
+            <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span>
           </div>
           <div class="faq-answer">
             <p data-i18n="faq5-a">Nos enfocamos en encontrar ventajas estadísticas y garantías. Nuestro historial habla por sí mismo — si ocurre alguna pérdida, serás ampliamente compensado.</p>

@@ -1451,3 +1451,107 @@
   justify-content: center;
   padding: var(--sp-6);
 }
+
+/* === Inline SVG icons === */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -0.125em;
+}
+
+.step-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--chrome-mid);
+}
+
+.plan-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r);
+  background: rgba(160, 165, 215, 0.08);
+  border: 1px solid var(--border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-4);
+  color: var(--chrome-mid);
+}
+.plan-icon svg { width: 20px; height: 20px; }
+
+.plan-icon--featured {
+  color: #E2E2E8;
+  background: rgba(220, 222, 235, 0.1);
+  border-color: rgba(220, 222, 235, 0.25);
+}
+
+.faq-icon svg { width: 12px; height: 12px; display: block; }
+
+.success-icon svg { width: 34px; height: 34px; color: var(--green); }
+.failed-icon svg { width: 30px; height: 30px; color: var(--red); }
+
+.badge .icon { width: 11px; height: 11px; }
+
+/* TEMPORARY: $5 test-plan strip — delete together with the test plan */
+.test-plan-strip {
+  margin-top: var(--sp-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--surface);
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--r-lg);
+}
+
+.test-plan-strip__info {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.test-plan-strip__icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: var(--r);
+  background: rgba(160, 165, 215, 0.08);
+  border: 1px solid var(--border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--chrome-mid);
+}
+.test-plan-strip__icon svg { width: 19px; height: 19px; }
+
+.test-plan-strip__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.test-plan-strip__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+.test-plan-strip__desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+.test-plan-strip > .btn { flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  .test-plan-strip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .test-plan-strip > .btn { width: 100%; }
+}

@@ -56,7 +56,7 @@
       en: 'CHOOSE YOUR <span class="chrome">PLAN</span>',
     },
     'plans-sub':  { es: 'Todos los planes incluyen acceso VIP a Telegram. Actualiza cuando quieras.', en: 'All plans include VIP Telegram access. Upgrade anytime.' },
-    'plan-badge': { es: '⭐ Más Popular', en: '⭐ Most Popular' },
+    'plan-badge': { es: 'Más Popular', en: 'Most Popular' },
     'basic-period': { es: '/mes', en: '/month' },
     'prem-period':  { es: '/mes', en: '/month' },
     'basic-f1':  { es: '2 predicciones de fútbol diarias',       en: '2 daily soccer predictions' },
@@ -72,6 +72,12 @@
     'prem-f6':   { es: 'Soporte experto prioritario',            en: 'Priority expert support' },
     'prem-btn':  { es: 'Obtener Plan Premium', en: 'Get Premium Plan' },
     'plans-note':{ es: 'Pagos procesados de forma segura mediante criptomoneda. Acceso otorgado en minutos tras la confirmación del pago.', en: 'Payments processed securely via cryptocurrency. Access granted within minutes of payment confirmation.' },
+
+    /* ── TEMPORARY $5 TEST PLAN (remove with the test plan) ── */
+    'test-card-badge': { es: 'Temporal',        en: 'Temporary' },
+    'test-card-title': { es: 'PLAN DE PRUEBA',  en: 'TEST PLAN' },
+    'test-card-desc':  { es: 'Plan de pago único para verificar el sistema de pago.', en: 'One-time plan for verifying the payment system.' },
+    'test-card-btn':   { es: 'Probar Pago — $5', en: 'Test Payment — $5' },
 
     /* ── FAQ ── */
     'faq-eyebrow': { es: 'Preguntas Frecuentes', en: 'FAQ' },
@@ -118,7 +124,7 @@
     /* ── PAYMENT PAGE ── */
     'pay-order':        { es: 'Tu Pedido',              en: 'Your Order' },
     'pay-secure-title': { es: 'Pago Seguro con Cripto', en: 'Secure Crypto Payment' },
-    'pay-secure-desc':  { es: 'Los pagos se procesan de forma segura a través de Heleket. Aceptamos USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.', en: 'Payments are processed securely via Heleket. We accept USDT and other major cryptocurrencies. Your transaction is private and protected.' },
+    'pay-secure-desc':  { es: 'Los pagos se procesan de forma segura a través de Paymento. Aceptamos Bitcoin, USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.', en: 'Payments are processed securely via Paymento. We accept Bitcoin, USDT and other major cryptocurrencies. Your transaction is private and protected.' },
     'pay-access':       { es: 'Acceso otorgado en minutos tras la confirmación', en: 'Access granted within minutes of confirmation' },
     'pay-title': {
       es: 'COMPLETAR <span class="chrome">PAGO</span>',
@@ -146,7 +152,7 @@
       en: 'PAYMENT <span class="chrome">CONFIRMED!</span>',
     },
     'suc-sub':        { es: 'Tu suscripción está activa. Únete a nuestro grupo privado de Telegram ahora para empezar a recibir predicciones.', en: 'Your subscription is active. Join our private Telegram group now to start receiving predictions.' },
-    'suc-tg-btn':     { es: '🚀 Unirse al Grupo VIP de Telegram', en: '🚀 Join VIP Telegram Group' },
+    'suc-tg-btn':     { es: 'Unirse al Grupo VIP de Telegram', en: 'Join VIP Telegram Group' },
     'suc-next-h':     { es: 'Próximo paso:', en: 'Next step:' },
     'suc-next-p': {
       es: 'Una vez que el administrador te verifique en Telegram, recibirás un <strong>código de acceso</strong> personal por DM. Úsalo para iniciar sesión en tu cuenta de miembro.',
@@ -190,7 +196,7 @@
 
     /* ── MEMBER PAGE ── */
     'member-sub':        { es: 'Tu suscripción está activa. Consulta el grupo de Telegram para las predicciones de hoy.', en: "Your subscription is active. Check the Telegram group for today's predictions." },
-    'member-tg-btn':     { es: '🚀 Abrir Grupo de Telegram',      en: '🚀 Open Telegram Group' },
+    'member-tg-btn':     { es: 'Abrir Grupo de Telegram',      en: 'Open Telegram Group' },
     'member-today': {
       es: 'SELECCIONES <span class="chrome">DE HOY</span>',
       en: "TODAY'S <span class=\"chrome\">PICKS</span>",
@@ -226,7 +232,7 @@
     'pjs-price-prem':  { es: '$300 / mes',  en: '$300 / month' },
     'pjs-badge-basic': { es: 'Plan Básico', en: 'Basic Plan' },
     'pjs-badge-prem':  { es: 'Plan Premium',en: 'Premium Plan' },
-    'pjs-popular':     { es: '⭐ Más Popular', en: '⭐ Most Popular' },
+    'pjs-popular':     { es: 'Más Popular', en: 'Most Popular' },
     'pjs-basic-f1':    { es: '2 predicciones de fútbol diarias',       en: '2 daily soccer predictions' },
     'pjs-basic-f2':    { es: 'Análisis de partidos del fin de semana', en: 'Weekend match analysis' },
     'pjs-basic-f3':    { es: 'Acceso VIP privado',          en: 'Private VIP access' },
@@ -237,6 +243,12 @@
     'pjs-prem-f4':     { es: 'Acceso al foro de la comunidad',         en: 'Community forum access' },
     'pjs-prem-f5':     { es: 'Acceso VIP privado',          en: 'Private VIP access' },
     'pjs-prem-f6':     { es: 'Soporte experto prioritario',            en: 'Priority expert support' },
+    /* TEMPORARY $5 test plan (remove with the test plan) */
+    'pjs-test-name':   { es: 'PRUEBA',          en: 'TEST' },
+    'pjs-price-test':  { es: '$5 / pago único', en: '$5 / one-time' },
+    'pjs-badge-test':  { es: 'Plan de Prueba',  en: 'Test Plan' },
+    'pjs-test-f1':     { es: 'Pago único de $5 para probar el sistema', en: 'One-time $5 payment to test the system' },
+    'pjs-test-f2':     { es: 'Mismo flujo de pago que los planes reales', en: 'Same checkout flow as the real plans' },
     'pjs-pay-btn':     { es: 'Pagar con Cripto',   en: 'Pay with Crypto' },
     'pjs-processing':  { es: 'Procesando...',       en: 'Processing...' },
     'pjs-error-conn':  { es: 'No se puede conectar al servidor de pago. Verifica tu conexión e intenta de nuevo.', en: 'Unable to connect to payment server. Please check your connection and try again.' },
