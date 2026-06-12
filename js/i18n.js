@@ -126,6 +126,8 @@
     'pay-secure-title': { es: 'Pago Seguro con Cripto', en: 'Secure Crypto Payment' },
     'pay-secure-desc':  { es: 'Los pagos se procesan de forma segura a través de Paymento. Aceptamos Bitcoin, USDT y otras criptomonedas principales. Tu transacción es privada y está protegida.', en: 'Payments are processed securely via Paymento. We accept Bitcoin, USDT and other major cryptocurrencies. Your transaction is private and protected.' },
     'pay-access':       { es: 'Acceso otorgado en minutos tras la confirmación', en: 'Access granted within minutes of confirmation' },
+    'pay-methods-title':{ es: 'Paga desde cualquier wallet', en: 'Pay from any wallet' },
+    'pay-methods-desc': { es: 'Con Bitcoin, Litecoin, Dogecoin o Bitcoin Cash recibes una dirección y código QR — envía el pago desde cualquier wallet o exchange. Con Ethereum y monedas EVM, la pasarela conecta tu wallet (MetaMask, Trust Wallet, etc.).', en: 'With Bitcoin, Litecoin, Dogecoin or Bitcoin Cash you get an address and QR code — send the payment from any wallet or exchange. With Ethereum and EVM coins, the gateway connects your wallet (MetaMask, Trust Wallet, etc.).' },
     'pay-title': {
       es: 'COMPLETAR <span class="chrome">PAGO</span>',
       en: 'COMPLETE <span class="chrome">CHECKOUT</span>',
@@ -148,6 +150,12 @@
     'suc-pending-p':    { es: 'Esperando confirmación de blockchain. Puede tomar de unos minutos hasta una hora según la criptomoneda. Puedes cerrar esta página — tu pago se registrará automáticamente.', en: 'Waiting for blockchain confirmation. This can take from a few minutes up to an hour depending on the cryptocurrency. You can close this page — your payment will register automatically.' },
     'suc-pending-info': { es: 'Tras la confirmación, únete al grupo de Telegram para recibir tu acceso. Si cierras esta página, puedes volver cuando quieras para ver el estado.', en: 'Once confirmed, join the Telegram group to receive your access. If you close this page you can come back anytime to check the status.' },
     'suc-still-pending':{ es: 'Aún esperando confirmación. Es seguro cerrar esta página — tu acceso se otorgará en cuanto se confirme el pago.', en: 'Still waiting for confirmation. It is safe to close this page — your access will be granted as soon as the payment confirms.' },
+    'suc-awaiting-h':   { es: 'ESPERANDO TU PAGO', en: 'AWAITING YOUR PAYMENT' },
+    'suc-awaiting-p':   { es: 'Aún no detectamos tu transacción. Completa el pago en la pasarela — esta página se actualizará automáticamente.', en: "We haven't detected your transaction yet. Complete the payment on the gateway — this page updates automatically." },
+    'suc-return-gateway': { es: 'Volver a la pasarela de pago', en: 'Return to payment gateway' },
+    'suc-step1':        { es: 'Pago',         en: 'Payment' },
+    'suc-step2':        { es: 'Confirmación', en: 'Confirmation' },
+    'suc-step3':        { es: 'Acceso',       en: 'Access' },
     'banner-pending':      { es: 'Tienes un pago en proceso.', en: 'You have a payment in progress.' },
     'banner-pending-link': { es: 'Ver estado →',               en: 'View status →' },
     'suc-title': {

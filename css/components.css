@@ -1494,6 +1494,87 @@
 
 .badge .icon { width: 11px; height: 11px; }
 
+/* === Payment progress steps (success page) === */
+.pay-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-2) 0;
+}
+
+.pay-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+.pay-step__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-hover);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background var(--ease), border-color var(--ease);
+}
+.pay-step__dot svg {
+  width: 13px;
+  height: 13px;
+  opacity: 0;
+  transition: opacity var(--ease);
+}
+
+.pay-step__label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-dim);
+  transition: color var(--ease);
+  white-space: nowrap;
+}
+
+.pay-step__line {
+  flex: 1;
+  max-width: 70px;
+  height: 1.5px;
+  background: var(--border);
+  margin-top: 13px; /* aligns with dot center (28px dot) */
+  transition: background var(--ease);
+}
+
+/* Active: pulsing inner dot */
+.pay-step--active .pay-step__dot {
+  border-color: var(--chrome-mid);
+}
+.pay-step--active .pay-step__dot::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--chrome-mid);
+  animation: banner-pulse 1.5s ease-in-out infinite;
+}
+.pay-step--active .pay-step__label { color: var(--text); }
+
+/* Done: green check */
+.pay-step--done .pay-step__dot {
+  background: var(--green-glow);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: var(--green);
+}
+.pay-step--done .pay-step__dot svg { opacity: 1; }
+.pay-step--done .pay-step__label { color: var(--green); }
+
+.pay-step__line--done { background: rgba(34, 197, 94, 0.4); }
+
 /* === Pending payment banner (bottom toast) === */
 .pending-banner {
   position: fixed;

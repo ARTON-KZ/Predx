@@ -149,9 +149,14 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
-    // Remember the order so the user can check status even after closing the gateway
+    // Remember the order so the user can check status (and return to the
+    // gateway) even after closing the payment page
     try {
-      localStorage.setItem('predx_pending_order', JSON.stringify({ order_id: data.order_id, ts: Date.now() }));
+      localStorage.setItem('predx_pending_order', JSON.stringify({
+        order_id: data.order_id,
+        payment_url: data.payment_url,
+        ts: Date.now(),
+      }));
     } catch {}
 
     window.location.href = data.payment_url;

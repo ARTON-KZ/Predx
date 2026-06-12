@@ -25,9 +25,35 @@
       <div class="pending-state" id="statePending">
         <div class="pending-spinner"></div>
         <div>
-          <h3 style="font-family:var(--font-display); font-size:32px; letter-spacing:0.04em; margin-bottom:var(--sp-2);" data-i18n="suc-pending-h">CONFIRMANDO PAGO</h3>
-          <p style="color:var(--text-sub); font-size:14px;" data-i18n="suc-pending-p">Esperando confirmación de blockchain. Puede tomar de unos minutos hasta una hora según la criptomoneda. Puedes cerrar esta página — tu pago se registrará automáticamente.</p>
+          <h3 id="pendingTitle" style="font-family:var(--font-display); font-size:32px; letter-spacing:0.04em; margin-bottom:var(--sp-2);" data-i18n="suc-pending-h">CONFIRMANDO PAGO</h3>
+          <p id="pendingDesc" style="color:var(--text-sub); font-size:14px;" data-i18n="suc-pending-p">Esperando confirmación de blockchain. Puede tomar de unos minutos hasta una hora según la criptomoneda. Puedes cerrar esta página — tu pago se registrará automáticamente.</p>
         </div>
+
+        <!-- Live progress -->
+        <div class="pay-steps">
+          <div class="pay-step" id="payStep1">
+            <div class="pay-step__dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4.5 12.5 9.5 17.5 19.5 6.5" /></svg>
+            </div>
+            <div class="pay-step__label" data-i18n="suc-step1">Pago</div>
+          </div>
+          <div class="pay-step__line" id="payLine1"></div>
+          <div class="pay-step" id="payStep2">
+            <div class="pay-step__dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4.5 12.5 9.5 17.5 19.5 6.5" /></svg>
+            </div>
+            <div class="pay-step__label" data-i18n="suc-step2">Confirmación</div>
+          </div>
+          <div class="pay-step__line" id="payLine2"></div>
+          <div class="pay-step" id="payStep3">
+            <div class="pay-step__dot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4.5 12.5 9.5 17.5 19.5 6.5" /></svg>
+            </div>
+            <div class="pay-step__label" data-i18n="suc-step3">Acceso</div>
+          </div>
+        </div>
+
+        <a id="returnGatewayBtn" class="btn btn--primary btn--full" style="display:none;" data-i18n="suc-return-gateway">Volver a la pasarela de pago</a>
         <div class="alert alert--info" style="width:100%; font-size:13px; text-align:left;">
           <svg class="icon" style="width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="9" />
@@ -53,6 +79,7 @@
           </svg>
         </div>
         <h3 style="font-family:var(--font-display); font-size:36px; letter-spacing:0.04em; margin-bottom:var(--sp-3);" data-i18n-html="suc-title">PAGO <span class="chrome">CONFIRMADO!</span></h3>
+        <p id="successMeta" style="display:none; margin-bottom:var(--sp-4);"></p>
         <p style="color:var(--text-sub); font-size:15px; margin-bottom:var(--sp-8); line-height:1.65;" data-i18n="suc-sub">
           Tu suscripción está activa. Únete a nuestro grupo privado de Telegram ahora para empezar a recibir predicciones.
         </p>
@@ -114,19 +141,17 @@
     const PENDING_KEY = 'predx_pending_order';
     const params = new URLSearchParams(window.location.search);
 
-    let orderId = params.get('order_id');
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null'); } catch {}
+
     // Fallback: the customer closed the gateway and came back later
-    if (!orderId) {
-      try {
-        const saved = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null');
-        if (saved && saved.order_id) orderId = saved.order_id;
-      } catch {}
-    }
+    let orderId = params.get('order_id') || (saved && saved.order_id) || null;
 
     const pendingEl  = document.getElementById('statePending');
     const successEl  = document.getElementById('stateSuccess');
     const failedEl   = document.getElementById('stateFailed');
     const stillNote  = document.getElementById('stillPendingNote');
+    const returnBtn  = document.getElementById('returnGatewayBtn');
 
     function showState(state) {
       pendingEl.style.display = state === 'pending' ? 'flex'  : 'none';
@@ -136,6 +161,55 @@
 
     function clearPending() {
       try { localStorage.removeItem(PENDING_KEY); } catch {}
+    }
+
+    function t(key) {
+      return window.predxI18n ? window.predxI18n.t(key) : key;
+    }
+
+    // === Stage handling: 'awaiting' (no tx detected) vs 'confirming' (tx on-chain) ===
+    let currentStage = 'confirming';
+
+    function renderStage() {
+      const awaiting = currentStage === 'awaiting';
+
+      const title = document.getElementById('pendingTitle');
+      const desc  = document.getElementById('pendingDesc');
+      title.dataset.i18n = awaiting ? 'suc-awaiting-h' : 'suc-pending-h';
+      desc.dataset.i18n  = awaiting ? 'suc-awaiting-p' : 'suc-pending-p';
+      title.textContent = t(title.dataset.i18n);
+      desc.textContent  = t(desc.dataset.i18n);
+
+      const s1 = document.getElementById('payStep1');
+      const s2 = document.getElementById('payStep2');
+      const l1 = document.getElementById('payLine1');
+      s1.classList.toggle('pay-step--active', awaiting);
+      s1.classList.toggle('pay-step--done', !awaiting);
+      s2.classList.toggle('pay-step--active', !awaiting);
+      l1.classList.toggle('pay-step__line--done', !awaiting);
+
+      // Way back to the gateway if the customer never sent funds
+      const url = saved && saved.payment_url;
+      returnBtn.style.display = awaiting && url ? 'flex' : 'none';
+      if (url) returnBtn.href = url;
+    }
+
+    function setStage(stage) {
+      if (stage !== 'awaiting' && stage !== 'confirming') return;
+      if (stage === currentStage) return;
+      currentStage = stage;
+      renderStage();
+    }
+
+    document.addEventListener('predx:langchange', renderStage);
+
+    function showSuccessMeta(data) {
+      const PLAN_KEYS = { basic: 'pjs-badge-basic', premium: 'pjs-badge-prem', test: 'pjs-badge-test' };
+      const el = document.getElementById('successMeta');
+      if (!data || !data.plan || !PLAN_KEYS[data.plan]) return;
+      const name = data.full_name ? `${data.full_name} — ` : '';
+      el.innerHTML = `<span class="badge badge--green">${name}${t(PLAN_KEYS[data.plan])}</span>`;
+      el.style.display = 'block';
     }
 
     if (!orderId) {
@@ -155,8 +229,9 @@
           // network blip — keep trying
         }
 
-        if (data && data.status === 'paid')   { clearPending(); showState('paid');   return; }
+        if (data && data.status === 'paid')   { clearPending(); showSuccessMeta(data); showState('paid'); return; }
         if (data && data.status === 'failed') { clearPending(); showState('failed'); return; }
+        if (data) setStage(data.stage);
 
         const elapsed = Date.now() - started;
         // Only the backend decides failure — a slow blockchain is not a failed payment.
@@ -166,6 +241,7 @@
       }
 
       showState('pending');
+      renderStage();
       poll();
     }
   </script>

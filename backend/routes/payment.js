@@ -73,6 +73,7 @@ router.get('/status/:orderId', async (req, res) => {
     }
 
     let status = record.status;
+    let stage = status === 'paid' ? 'paid' : status === 'failed' ? 'failed' : null;
 
     // While pending, double-check with Paymento directly so confirmation
     // works even if the IPN hasn't arrived yet.
@@ -80,15 +81,17 @@ router.get('/status/:orderId', async (req, res) => {
       try {
         const v = await paymento.verifyPayment(record.invoice_uuid);
         status = v.success ? 'paid' : paymento.mapOrderStatus(v.orderStatus);
+        stage = status === 'pending' ? paymento.stageFromOrderStatus(v.orderStatus) : status;
         if (status !== record.status) {
           stmts.updateStatusByOrderId.run({ status, order_id: record.order_id });
         }
       } catch (e) {
-        // Gateway unreachable — keep last known status; the IPN will update us.
+        // Gateway unreachable — keep last known status (stage stays null);
+        // the IPN or the sweep will update us.
       }
     }
 
-    res.json({ status, plan: record.plan, full_name: record.full_name });
+    res.json({ status, stage, plan: record.plan, full_name: record.full_name });
   } catch (err) {
     console.error('Status check error:', err.message);
     res.status(500).json({ error: 'Internal server error.' });

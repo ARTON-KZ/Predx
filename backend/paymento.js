@@ -64,4 +64,17 @@ function mapOrderStatus(orderStatus) {
   return 'pending';
 }
 
-module.exports = { createPaymentRequest, gatewayUrl, verifyPayment, mapOrderStatus };
+// Refines a pending order into a customer-facing stage:
+// 'awaiting'   — no payment detected yet (customer hasn't sent funds)
+// 'confirming' — transaction seen on-chain, waiting for confirmations
+const CONFIRMING_STATUSES = new Set([2, 3, 7, 'partialpaid', 'waitingtoconfirm', 'paid']);
+
+function stageFromOrderStatus(orderStatus) {
+  const key = typeof orderStatus === 'string' && isNaN(Number(orderStatus))
+    ? orderStatus.toLowerCase()
+    : Number(orderStatus);
+  if (CONFIRMING_STATUSES.has(key)) return 'confirming';
+  return 'awaiting';
+}
+
+module.exports = { createPaymentRequest, gatewayUrl, verifyPayment, mapOrderStatus, stageFromOrderStatus };
