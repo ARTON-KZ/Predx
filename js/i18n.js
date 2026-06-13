@@ -73,12 +73,6 @@
     'prem-btn':  { es: 'Obtener Plan Premium', en: 'Get Premium Plan' },
     'plans-note':{ es: 'Pagos procesados de forma segura mediante criptomoneda. Acceso otorgado en minutos tras la confirmación del pago.', en: 'Payments processed securely via cryptocurrency. Access granted within minutes of payment confirmation.' },
 
-    /* ── TEMPORARY $5 TEST PLAN (remove with the test plan) ── */
-    'test-card-badge': { es: 'Temporal',        en: 'Temporary' },
-    'test-card-title': { es: 'PLAN DE PRUEBA',  en: 'TEST PLAN' },
-    'test-card-desc':  { es: 'Plan de pago único para verificar el sistema de pago.', en: 'One-time plan for verifying the payment system.' },
-    'test-card-btn':   { es: 'Probar Pago — $5', en: 'Test Payment — $5' },
-
     /* ── FAQ ── */
     'faq-eyebrow': { es: 'Preguntas Frecuentes', en: 'FAQ' },
     'faq-title': {
@@ -258,12 +252,6 @@
     'pjs-prem-f4':     { es: 'Acceso al foro de la comunidad',         en: 'Community forum access' },
     'pjs-prem-f5':     { es: 'Acceso VIP privado',          en: 'Private VIP access' },
     'pjs-prem-f6':     { es: 'Soporte experto prioritario',            en: 'Priority expert support' },
-    /* TEMPORARY $5 test plan (remove with the test plan) */
-    'pjs-test-name':   { es: 'PRUEBA',          en: 'TEST' },
-    'pjs-price-test':  { es: '$5 / pago único', en: '$5 / one-time' },
-    'pjs-badge-test':  { es: 'Plan de Prueba',  en: 'Test Plan' },
-    'pjs-test-f1':     { es: 'Pago único de $5 para probar el sistema', en: 'One-time $5 payment to test the system' },
-    'pjs-test-f2':     { es: 'Mismo flujo de pago que los planes reales', en: 'Same checkout flow as the real plans' },
     'pjs-pay-btn':     { es: 'Pagar con Cripto',   en: 'Pay with Crypto' },
     'pjs-processing':  { es: 'Procesando...',       en: 'Processing...' },
     'pjs-error-conn':  { es: 'No se puede conectar al servidor de pago. Verifica tu conexión e intenta de nuevo.', en: 'Unable to connect to payment server. Please check your connection and try again.' },

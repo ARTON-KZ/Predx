@@ -25,14 +25,6 @@ const PLANS_DATA = {
     featured: true,
     featureKeys: ['pjs-prem-f1','pjs-prem-f2','pjs-prem-f3','pjs-prem-f4','pjs-prem-f5','pjs-prem-f6'],
   },
-  // TEMPORARY: $5 plan for end-to-end payment testing — remove after testing
-  test: {
-    nameKey:  'pjs-test-name',
-    priceKey: 'pjs-price-test',
-    badgeKey: 'pjs-badge-test',
-    featured: false,
-    featureKeys: ['pjs-test-f1','pjs-test-f2'],
-  },
 };
 
 const params  = new URLSearchParams(window.location.search);

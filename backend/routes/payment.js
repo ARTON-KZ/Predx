@@ -7,8 +7,6 @@ const paymento = require('../paymento');
 const PLANS = {
   basic: { name: 'Basic', amount: '150.00', amountNum: 150 },
   premium: { name: 'Premium', amount: '300.00', amountNum: 300 },
-  // TEMPORARY: $5 plan for end-to-end payment testing — remove after testing
-  test: { name: 'Test', amount: '5.00', amountNum: 5 },
 };
 
 router.post('/create', async (req, res) => {

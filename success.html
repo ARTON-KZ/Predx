@@ -218,7 +218,7 @@
     document.addEventListener('predx:langchange', renderStage);
 
     function showSuccessMeta(data) {
-      const PLAN_KEYS = { basic: 'pjs-badge-basic', premium: 'pjs-badge-prem', test: 'pjs-badge-test' };
+      const PLAN_KEYS = { basic: 'pjs-badge-basic', premium: 'pjs-badge-prem' };
       const el = document.getElementById('successMeta');
       if (!data || !data.plan || !PLAN_KEYS[data.plan]) return;
       const name = data.full_name ? `${data.full_name} — ` : '';
