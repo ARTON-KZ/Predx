@@ -3,6 +3,7 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const { stmts } = require('../db');
 const paymento = require('../paymento');
+const { hashPassword } = require('../hash');
 
 const PLANS = {
   basic: { name: 'Basic', amount: '150.00', amountNum: 150 },
@@ -11,7 +12,7 @@ const PLANS = {
 
 router.post('/create', async (req, res) => {
   try {
-    const { plan, full_name, email } = req.body;
+    const { plan, full_name, email, password } = req.body;
 
     if (!plan || !PLANS[plan]) {
       return res.status(400).json({ error: 'Invalid plan. Choose basic or premium.' });
@@ -21,6 +22,9 @@ router.post('/create', async (req, res) => {
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ error: 'Valid email address is required.' });
+    }
+    if (typeof password !== 'string' || password.trim().length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters.' });
     }
 
     const order_id = uuidv4();
@@ -42,6 +46,7 @@ router.post('/create', async (req, res) => {
       amount: selectedPlan.amountNum,
       full_name: full_name.trim(),
       email: email.toLowerCase().trim(),
+      password_hash: hashPassword(password.trim()),
     });
     stmts.updateInvoiceUuid.run({ invoice_uuid: token, order_id });
 

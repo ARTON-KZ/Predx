@@ -34,6 +34,11 @@ try {
   db.exec(`ALTER TABLE payments ADD COLUMN member_password TEXT`);
 } catch (_) { /* column already exists */ }
 
+// Customer-set password (scrypt hash), chosen at checkout
+try {
+  db.exec(`ALTER TABLE payments ADD COLUMN password_hash TEXT`);
+} catch (_) { /* column already exists */ }
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS predictions (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,8 +56,8 @@ db.exec(`
 
 const stmts = {
   insertPayment: db.prepare(`
-    INSERT INTO payments (order_id, plan, amount, full_name, email)
-    VALUES (@order_id, @plan, @amount, @full_name, @email)
+    INSERT INTO payments (order_id, plan, amount, full_name, email, password_hash)
+    VALUES (@order_id, @plan, @amount, @full_name, @email, @password_hash)
   `),
 
   updateInvoiceUuid: db.prepare(`
@@ -91,6 +96,20 @@ const stmts = {
     SET otp = @otp, member_password = @member_password,
         otp_generated_at = datetime('now'), updated_at = datetime('now')
     WHERE id = @id
+  `),
+
+  // OTP only — the customer's own password (password_hash) is set at checkout
+  setMemberOtp: db.prepare(`
+    UPDATE payments
+    SET otp = @otp, otp_generated_at = datetime('now'), updated_at = datetime('now')
+    WHERE id = @id
+  `),
+
+  // Paid orders for an email that carry a customer-set password (newest first)
+  getPaidByEmail: db.prepare(`
+    SELECT * FROM payments
+    WHERE email = @email AND status = 'paid' AND password_hash IS NOT NULL
+    ORDER BY created_at DESC
   `),
 
   markOtpIssued: db.prepare(`

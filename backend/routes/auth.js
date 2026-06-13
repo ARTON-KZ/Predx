@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { stmts } = require('../db');
+const { verifyPassword } = require('../hash');
 
-// Step 1 — verify email + member password
+// Step 1 — verify email + the password the customer chose at checkout
 router.post('/prelogin', (req, res) => {
   try {
     const { email, password } = req.body;
@@ -11,14 +12,14 @@ router.post('/prelogin', (req, res) => {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    const record = stmts.getByEmailAndPassword.get({
-      email: email.toLowerCase().trim(),
-      member_password: password.trim(),
-    });
+    // A customer may have several paid orders (renewals); match against any.
+    const records = stmts.getPaidByEmail.all({ email: email.toLowerCase().trim() });
+    const record = records.find((r) => verifyPassword(password.trim(), r.password_hash));
 
     if (!record) {
+      // Generic message — don't reveal whether the email exists or is unpaid.
       return res.status(401).json({
-        error: 'Incorrect email or password.',
+        error: 'Incorrect email or password, or your payment is not yet confirmed.',
       });
     }
 

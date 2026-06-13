@@ -98,6 +98,8 @@ form.addEventListener('submit', async (e) => {
 
   const fullName = document.getElementById('fullName').value.trim();
   const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const passwordConfirm = document.getElementById('passwordConfirm').value;
 
   let hasError = false;
 
@@ -123,6 +125,28 @@ form.addEventListener('submit', async (e) => {
     emailError.classList.remove('show');
   }
 
+  const passInput = document.getElementById('password');
+  const passError = document.getElementById('passwordError');
+  if (password.trim().length < 6) {
+    passInput.classList.add('error');
+    passError.classList.add('show');
+    hasError = true;
+  } else {
+    passInput.classList.remove('error');
+    passError.classList.remove('show');
+  }
+
+  const pass2Input = document.getElementById('passwordConfirm');
+  const pass2Error = document.getElementById('passwordConfirmError');
+  if (password !== passwordConfirm || passwordConfirm.length === 0) {
+    pass2Input.classList.add('error');
+    pass2Error.classList.add('show');
+    hasError = true;
+  } else {
+    pass2Input.classList.remove('error');
+    pass2Error.classList.remove('show');
+  }
+
   if (hasError) return;
 
   setLoading(true);
@@ -131,7 +155,7 @@ form.addEventListener('submit', async (e) => {
     const res = await fetch(`${API_BASE}/api/payment/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: planKey, full_name: fullName, email }),
+      body: JSON.stringify({ plan: planKey, full_name: fullName, email, password: password.trim() }),
     });
     const data = await res.json();
 
@@ -158,6 +182,10 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-['fullName', 'email'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', hideError);
+['fullName', 'email', 'password', 'passwordConfirm'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', (e) => {
+    hideError();
+    e.target.classList.remove('error');
+    e.target.parentElement.querySelector('.form-error')?.classList.remove('show');
+  });
 });

@@ -166,7 +166,6 @@ function renderTable() {
       <td>${escHtml(member.email || '—')}</td>
       <td><span class="td-plan ${member.plan}">${escHtml((member.plan || '').toUpperCase())}</span></td>
       <td>${date}</td>
-      <td id="pwCell-${member.id}">${renderPasswordCell(member)}</td>
       <td id="otpCell-${member.id}">${renderOtpCell(member)}</td>
       <td id="statusCell-${member.id}">${renderStatusCell(member)}</td>
     `;
@@ -174,21 +173,9 @@ function renderTable() {
   });
 }
 
-function renderPasswordCell(member) {
-  if (!member.member_password) {
-    return `<button class="btn btn--outline" style="font-size:12px; padding:6px 14px;" onclick="generateCredentials(${member.id})">Generate</button>`;
-  }
-  return `
-    <div class="otp-box">
-      <span class="otp-code">${escHtml(member.member_password)}</span>
-      <button class="copy-btn" id="copyPwBtn-${member.id}" onclick="copyCode('${escHtml(member.member_password)}', 'copyPwBtn-${member.id}')">Copy</button>
-    </div>
-  `;
-}
-
 function renderOtpCell(member) {
   if (!member.otp) {
-    return '<span style="font-size:12px; color:var(--text-dim);">—</span>';
+    return `<button class="btn btn--outline" style="font-size:12px; padding:6px 14px;" onclick="generateCredentials(${member.id})">Generate Code</button>`;
   }
   return `
     <div class="otp-box">
@@ -199,8 +186,8 @@ function renderOtpCell(member) {
 }
 
 function renderStatusCell(member) {
-  if (!member.otp || !member.member_password) {
-    return '<span style="font-size:12px; color:var(--text-dim);">No credentials</span>';
+  if (!member.otp) {
+    return '<span style="font-size:12px; color:var(--text-dim);">No code yet</span>';
   }
   if (member.otp_issued) {
     return '<span class="issue-btn issued" style="cursor:default;">✓ Issued</span>';
@@ -208,13 +195,11 @@ function renderStatusCell(member) {
   return `<button class="issue-btn" onclick="markIssued(${member.id})">Mark as Issued</button>`;
 }
 
-// === Generate Credentials (password + OTP) ===
+// === Generate access code (OTP). The customer's password is set at checkout. ===
 async function generateCredentials(id) {
-  const pwCell  = document.getElementById(`pwCell-${id}`);
   const otpCell = document.getElementById(`otpCell-${id}`);
-  const origPw  = pwCell.innerHTML;
-  pwCell.innerHTML  = '<span style="color:var(--text-dim);font-size:13px;">Generating...</span>';
-  otpCell.innerHTML = '<span style="color:var(--text-dim);font-size:13px;">...</span>';
+  const origOtp = otpCell.innerHTML;
+  otpCell.innerHTML = '<span style="color:var(--text-dim);font-size:13px;">Generating...</span>';
 
   try {
     const res  = await fetch(`${API_BASE}/api/admin/generate-credentials/${id}`, {
@@ -224,26 +209,20 @@ async function generateCredentials(id) {
     const data = await res.json();
 
     if (!res.ok) {
-      pwCell.innerHTML  = origPw;
-      otpCell.innerHTML = '<span style="font-size:12px; color:var(--text-dim);">—</span>';
-      alert(data.error || 'Failed to generate credentials.');
+      otpCell.innerHTML = origOtp;
+      alert(data.error || 'Failed to generate access code.');
       return;
     }
 
     const member = allMembers.find(m => m.id === id);
-    if (member) {
-      member.otp             = data.otp;
-      member.member_password = data.member_password;
-    }
+    if (member) member.otp = data.otp;
 
-    pwCell.innerHTML  = renderPasswordCell({ id, member_password: data.member_password });
     otpCell.innerHTML = renderOtpCell({ id, otp: data.otp });
     document.getElementById(`statusCell-${id}`).innerHTML =
-      renderStatusCell({ id, otp: data.otp, member_password: data.member_password, otp_issued: 0 });
+      renderStatusCell({ id, otp: data.otp, otp_issued: 0 });
     updateStats();
   } catch {
-    pwCell.innerHTML = origPw;
-    otpCell.innerHTML = '<span style="font-size:12px; color:var(--text-dim);">—</span>';
+    otpCell.innerHTML = origOtp;
     alert('Connection error. Please try again.');
   }
 }
@@ -281,7 +260,7 @@ async function markIssued(id) {
 
     document.querySelector(`#statusCell-${id}`)?.closest('tr')?.classList.add('issued');
     document.getElementById(`statusCell-${id}`).innerHTML =
-      renderStatusCell({ id, otp: member?.otp, member_password: member?.member_password, otp_issued: 1 });
+      renderStatusCell({ id, otp: member?.otp, otp_issued: 1 });
     updateStats();
   } catch {
     alert('Connection error. Please try again.');

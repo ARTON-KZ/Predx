@@ -117,6 +117,44 @@
             <span class="form-error" id="emailError" data-i18n="pay-email-error">Por favor ingresa un correo electrónico válido.</span>
           </div>
 
+          <div class="form-group">
+            <label class="form-label" for="password" data-i18n="pay-pass-label">Crea una Contraseña</label>
+            <input
+              class="form-input"
+              type="password"
+              id="password"
+              name="password"
+              data-i18n-placeholder="pay-pass-ph"
+              placeholder="Mínimo 6 caracteres"
+              autocomplete="new-password"
+              required
+            />
+            <span class="form-error" id="passwordError" data-i18n="pay-pass-error">La contraseña debe tener al menos 6 caracteres.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="passwordConfirm" data-i18n="pay-pass2-label">Confirmar Contraseña</label>
+            <input
+              class="form-input"
+              type="password"
+              id="passwordConfirm"
+              name="passwordConfirm"
+              data-i18n-placeholder="pay-pass2-ph"
+              placeholder="Repite tu contraseña"
+              autocomplete="new-password"
+              required
+            />
+            <span class="form-error" id="passwordConfirmError" data-i18n="pay-pass2-error">Las contraseñas no coinciden.</span>
+          </div>
+
+          <p style="font-size:12px; color:var(--text-dim); line-height:1.6; display:flex; align-items:flex-start; gap:var(--sp-2);">
+            <svg class="icon" style="width:15px; height:15px; flex-shrink:0; margin-top:1px; color:var(--chrome-mid);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+            <span data-i18n="pay-pass-hint">Guarda esta contraseña: la usarás con tu correo para acceder a tu cuenta después del pago, en cualquier dispositivo.</span>
+          </p>
+
           <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn" style="margin-top:var(--sp-2);">
             <span id="btnText" data-i18n="pay-btn">Pagar con Cripto</span>
             <span id="btnSpinner" class="spinner" style="display:none;"></span>

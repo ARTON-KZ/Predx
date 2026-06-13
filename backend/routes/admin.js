@@ -46,17 +46,16 @@ router.get('/users', verifyAdminToken, (req, res) => {
   }
 });
 
-// Generates both a member password (login step 1) and an OTP (login step 2)
+// Generates the OTP (login step 2). The customer's password (step 1) is the
+// one they chose at checkout, so the admin only issues the access code.
 router.post('/generate-credentials/:id', verifyAdminToken, (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) return res.status(400).json({ error: 'Invalid ID.' });
 
-    const otp             = generateCode(8);
-    const member_password = generateCode(8);
-
-    stmts.generateCredentials.run({ otp, member_password, id });
-    res.json({ otp, member_password });
+    const otp = generateCode(8);
+    stmts.setMemberOtp.run({ otp, id });
+    res.json({ otp });
   } catch (err) {
     console.error('Credential generation error:', err.message);
     res.status(500).json({ error: 'Failed to generate credentials.' });
