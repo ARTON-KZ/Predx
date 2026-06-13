@@ -54,6 +54,20 @@
         </div>
 
         <a id="returnGatewayBtn" class="btn btn--primary btn--full" style="display:none;" data-i18n="suc-return-gateway">Volver a la pasarela de pago</a>
+
+        <!-- Manual "I've paid" check -->
+        <button id="verifyBtn" class="btn btn--outline btn--full">
+          <span id="verifyBtnText" data-i18n="suc-verify-btn">Ya pagué — Verificar ahora</span>
+          <span id="verifySpinner" class="spinner" style="display:none;"></span>
+        </button>
+        <div id="verifyMsg" class="alert alert--info" style="display:none; width:100%; font-size:13px; text-align:left;">
+          <svg class="icon" style="width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 2" />
+          </svg>
+          <span id="verifyMsgText" data-i18n="suc-verify-pending">Aún no detectamos tu pago. Si ya enviaste los fondos, espera unos minutos — seguimos verificando automáticamente.</span>
+        </div>
+
         <div class="alert alert--info" style="width:100%; font-size:13px; text-align:left;">
           <svg class="icon" style="width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="9" />
@@ -212,6 +226,54 @@
       el.style.display = 'block';
     }
 
+    // === Shared status fetch (used by both auto-poll and the manual button) ===
+    let settled = false;
+
+    // Returns 'paid' | 'failed' | 'pending' | 'error'
+    async function checkStatus() {
+      let data = null;
+      try {
+        const res = await fetch(`${API_BASE}/api/payment/status/${orderId}`);
+        if (res.status === 404) { clearPending(); settled = true; showState('failed'); return 'failed'; }
+        if (res.ok) data = await res.json();
+      } catch {
+        return 'error';
+      }
+      if (!data) return 'error';
+
+      if (data.status === 'paid')   { clearPending(); settled = true; showSuccessMeta(data); showState('paid');   return 'paid'; }
+      if (data.status === 'failed') { clearPending(); settled = true; showState('failed'); return 'failed'; }
+      setStage(data.stage);
+      return 'pending';
+    }
+
+    // === Manual "I've paid — verify now" button ===
+    const verifyBtn     = document.getElementById('verifyBtn');
+    const verifyBtnText = document.getElementById('verifyBtnText');
+    const verifySpinner = document.getElementById('verifySpinner');
+    const verifyMsg     = document.getElementById('verifyMsg');
+    const verifyMsgText = document.getElementById('verifyMsgText');
+
+    if (verifyBtn) {
+      verifyBtn.addEventListener('click', async () => {
+        if (settled) return;
+        verifyBtn.disabled = true;
+        verifyBtnText.textContent = t('suc-verify-checking');
+        verifySpinner.style.display = 'inline-block';
+        verifyMsg.style.display = 'none';
+
+        const result = await checkStatus();
+
+        verifySpinner.style.display = 'none';
+        if (result === 'paid' || result === 'failed') return; // state already switched
+
+        verifyBtnText.textContent = t('suc-verify-btn');
+        verifyBtn.disabled = false;
+        verifyMsgText.textContent = result === 'error' ? t('suc-verify-error') : t('suc-verify-pending');
+        verifyMsg.style.display = 'flex';
+      });
+    }
+
     if (!orderId) {
       showState('failed');
     } else {
@@ -220,18 +282,9 @@
       const MAX_SESSION = 2 * 60 * 60 * 1000;  // keep polling up to 2 h on this page
 
       async function poll() {
-        let data = null;
-        try {
-          const res = await fetch(`${API_BASE}/api/payment/status/${orderId}`);
-          if (res.status === 404) { clearPending(); showState('failed'); return; }
-          if (res.ok) data = await res.json();
-        } catch {
-          // network blip — keep trying
-        }
-
-        if (data && data.status === 'paid')   { clearPending(); showSuccessMeta(data); showState('paid'); return; }
-        if (data && data.status === 'failed') { clearPending(); showState('failed'); return; }
-        if (data) setStage(data.stage);
+        if (settled) return;
+        const result = await checkStatus();
+        if (result === 'paid' || result === 'failed') return;
 
         const elapsed = Date.now() - started;
         // Only the backend decides failure — a slow blockchain is not a failed payment.
